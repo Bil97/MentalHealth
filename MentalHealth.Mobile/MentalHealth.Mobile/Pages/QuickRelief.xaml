@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Quick Relief"
+             x:Class="MentalHealth.Mobile.Pages.QuickRelief">
+    <ContentPage.Content>
+        <StackLayout Padding="5">
+            <Label Text="Quick Relief" FontSize="Title" />
+            <Label Text="Take a deap breath" FontSize="Medium" />
+            <Label Text="Try to breathing in for fifteen seconds, then breath out for fifteen seconds, repeat the process go ten minutes." />
+            <Label Text="Shift your thinking" FontSize="Medium" />
+
+            <CarouselView ItemsSource="{Binding .}" Loop="True">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding }" Aspect="AspectFit"/>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

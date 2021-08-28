@@ -1,0 +1,85 @@
+﻿@page "/health/{SessionId}"
+@attribute [Authorize]
+<h3 class="text-center">Health Record</h3>
+@if (Session == null)
+{
+    <em>Loading...</em>
+}
+else if (Session.PatientHealthRecords?.Count == 0)
+{
+    <p class="text-center">No health record available</p>
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">
+                Period: @string.Format("{0:dd/MM/yyyy HH:mm:ss}", Session.DateStarted) to
+                @if (Session.IsComplete)
+                {
+                    <span>@string.Format("{0:dd/MM/yyyy HH:mm:ss}", Session.DateEnded)</span>
+                }
+                else
+                {
+                    <span>present</span>
+                }
+            </h5>
+
+            <AuthorizeView Roles="HealthOfficer">
+                <div class="card-text">Patient name: <strong>@Session.Patient?.FullName</strong></div>
+            </AuthorizeView>
+            <AuthorizeView Roles="User">
+                <div class="card-text">Health officer: <strong>@Session.HealthOfficer?.FullName</strong></div>
+            </AuthorizeView>
+            <AuthorizeView Roles="Admin">
+                <div class="card-text">Health officer: <strong>@Session.HealthOfficer?.FullName</strong></div>
+                <div class="card-text">Patient name: <strong>@Session.Patient?.FullName</strong></div>
+            </AuthorizeView>
+            <div class="card-text">Amount paid: <strong>@Session.Amount</strong></div>
+            <br />
+
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Date</th>
+                    <th>Health record</th>
+                </tr>
+                <tbody>
+                    @foreach (var record in Session.PatientHealthRecords)
+                    {
+                        <tr>
+                            <td>@string.Format("{0:dd/MM/yyyy HH:mm:ss}", record.Date)</td>
+                            <td>@record.HealthRecord</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+<br />
+@code {
+    [Parameter]
+    public string SessionId { get; set; }
+    private SessionRecord Session { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetSession();
+    }
+
+    private async Task GetSession()
+    {
+        try
+        {
+            Session = await _httpClient.GetFromJsonAsync<SessionRecord>($"api/HealthRecords/{SessionId}");
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
+}

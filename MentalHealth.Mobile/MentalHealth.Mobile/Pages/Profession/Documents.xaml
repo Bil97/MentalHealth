@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MentalHealth.Mobile.Pages.Profession.Documents">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Clicked="RefreshToolbarItem_Clicked"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame>
+                <ScrollView>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label x:Name="StateLabel" Text="Documents" FontSize="Large" HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                        <ListView x:Name="DocumentsView">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout>
+                                            <Label Text="{Binding DocumentPath}"/>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+            <Button x:Name="ApproveButton" Text="Approve" HorizontalOptions="CenterAndExpand" Clicked="ApproveButton_Clicked"/>
+            <Editor x:Name="RejectEditor" AutoSize="TextChanges" TextChanged="RejectEditor_TextChanged"/>
+            <Button x:Name="RejectButton" Text="Reject" HorizontalOptions="CenterAndExpand" Clicked="RejectButton_Clicked" IsEnabled="False"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

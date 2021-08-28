@@ -1,0 +1,132 @@
+﻿@page "/apply"
+@attribute [Authorize]
+
+<AuthorizeView>
+    @if (context.User.IsInRole("Admin"))
+    {
+        <p class="text-center">Application is open to non System Admins only!.</p>
+    }
+    else
+    {
+        <div class="card mx-auto">
+            <div class="card-header">
+                <div class="card-title">To apply to be a Therapists, you need to provide legal documents to prove that you are a qualified Therapist.</div>
+            </div>
+            <div class="card-body">
+                <EditForm Model="_userProfession" OnValidSubmit="HandleValidSubmit" Context="_context">
+                    <div class="form-group">
+                        <label>Service fee (Amount that clients will pay for your Therapy services)</label>
+                        <InputNumber @bind-Value="serviceFee" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Maximum size = 5mb</label>
+                        <InputFile class="form-control-file border" OnChange="OnInputFileChange" disabled="@Submitting" multiple required />
+                    </div>
+                    <button type="submit" class="btn btn-primary" disabled="@Submitting">
+                        Apply
+                        @if (Submitting)
+                        {
+                            <span class="spinner-border spinner-border-sm"></span>
+                        }
+                    </button>
+                </EditForm>
+            </div>
+            @if (!string.IsNullOrEmpty(Response))
+            {
+                @if (Error == true)
+                {
+                    <div class="alert alert-warning alert-dismissible">
+                        <button type="button" @onclick="(() => { Error = null; })" class="close">&times;</button>
+                        @Response
+                    </div>
+                }
+                @if (Error == false)
+                {
+                    <div class="alert alert-success alert-dismissible">
+                        <button class="close" @onclick="(() => { Error = null; })">&times;</button>
+                        @Response
+                    </div>
+                }
+
+            }
+
+        </div>
+    }
+</AuthorizeView>
+<br />
+
+@code {
+    private bool? Error { get; set; }
+    private bool Submitting { get; set; }
+    private string Response { get; set; }
+    private decimal serviceFee = 0M;
+
+    private UserProfession _userProfession = new();
+    List<MentalHealth.Shared.Models.Profession> Professions { get; set; }
+    List<IBrowserFile> _files;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetProfessions();
+    }
+
+    private async Task GetProfessions()
+    {
+        try
+        {
+            Professions = await _httpClient.GetFromJsonAsync<List<MentalHealth.Shared.Models.Profession>>("api/professions");
+            _userProfession.ProfessionId = Professions!.FirstOrDefault()?.Id;
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        _files = e.GetMultipleFiles().ToList();
+    }
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            Submitting = true;
+            Error = null;
+            var content = new MultipartFormDataContent
+            {
+                {new StringContent(_userProfession.ProfessionId), "professionId"},
+                {new StringContent(serviceFee.ToString()), "serviceFee"}
+            };
+
+            foreach (var file in _files)
+            {
+                if (file.Size > 5242880)
+                {
+                    Submitting = false;
+                    Error = true;
+                    Response = "Upload failed because some files are larger than 5Mb.";
+                    return;
+                }
+                var byteArray = new byte[file.Size];
+                await file.OpenReadStream(5242880).ReadAsync(byteArray);
+                content.Add(new ByteArrayContent(byteArray), "formfile", file.Name);
+            }
+
+            var result = await _httpClient.PostAsync($"api/professions/apply", content);
+            Submitting = false;
+
+            Response = await result.Content.ReadAsStringAsync();
+            Error = !result.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
+
+}

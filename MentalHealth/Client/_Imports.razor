@@ -1,0 +1,28 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Net.Http.Headers
+@using System.Text
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.SignalR.Client
+@using MentalHealth.Shared.Models
+@using MentalHealth.Shared.Models.UserAccount
+@using MentalHealth.Shared.Services
+@using Microsoft.JSInterop
+@using MentalHealth.Client
+@using MentalHealth.Client.Services
+@using MentalHealth.Client.Shared
+@using Blazored.LocalStorage
+
+@inject HttpClient _httpClient
+@inject NavigationManager _navigation
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject ILocalStorageService _localStorage

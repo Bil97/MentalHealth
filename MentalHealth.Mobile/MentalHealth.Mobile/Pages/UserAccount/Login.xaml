@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Login"
+             x:Class="MentalHealth.Mobile.Pages.UserAccount.Login">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Frame VerticalOptions="CenterAndExpand" BorderColor="LightGray"
+               Margin="20" CornerRadius="10">
+            <ScrollView>
+                <StackLayout>
+                <StackLayout Orientation="Horizontal">                    
+                    <Label Text="Login" FontSize="Large" HorizontalTextAlignment="Center"/>
+                </StackLayout>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Username (Email)" VerticalOptions="CenterAndExpand" />
+                    <Entry x:Name="EmailEntry" Grid.Row="0" Grid.Column="1" Placeholder="Your email address"
+                       TextChanged="Entry_TextChanged" />
+                    <Label x:Name="EmailLabel" Text="*" Grid.Row="0" Grid.Column="2" TextColor="Red" />
+
+                    <Label Text="Password" Grid.Row="1" Grid.Column="0" VerticalOptions="CenterAndExpand"/>
+                    <Entry x:Name="PasswordEntry" Grid.Row="1" Grid.Column="1" Placeholder="Your password"
+                       IsPassword="True" TextChanged="Entry_TextChanged" />
+                    <Label x:Name="PasswordLabel" Text="*" Grid.Row="1" Grid.Column="2" TextColor="Red" />
+
+                    <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0">
+                        <CheckBox x:Name="RememberMeCheckBox" />
+                        <Label Text="Remember me" VerticalOptions="CenterAndExpand" />
+                    </StackLayout>
+                    <Button x:Name="LoginButton" Text="Login" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"  IsEnabled="False" Clicked="LoginButton_Clicked" />
+                    <Grid Grid.Row="4" Grid.ColumnSpan="3" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Text="Register" Clicked="RegisterButton_Clicked" />
+                        <Button Text="Forgot password" Grid.Column="1"
+                        Clicked="ForgotPassword_Clicked" />
+                    </Grid>
+                    <Label x:Name="StateLabel" Grid.Row="5" Grid.ColumnSpan="3" Grid.Column="0" />
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

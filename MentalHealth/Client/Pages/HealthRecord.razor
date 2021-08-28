@@ -1,0 +1,70 @@
+﻿@page "/health"
+@attribute [Authorize]
+<h3 class="text-center">Health Record</h3>
+@if (SessionRecords == null)
+{
+    <em>Loading...</em>
+}
+else if (SessionRecords.Count == 0)
+{
+    <p class="text-center">No health record available</p>
+}
+else
+{
+    @foreach (var session in SessionRecords)
+    {
+        <div class="card highlight mb-2">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Period: @string.Format("{0:dd/MM/yyyy HH:mm:ss}", session.DateStarted) to
+                    @if (session.IsComplete)
+                    {
+                        <span>@string.Format("{0:dd/MM/yyyy HH:mm:ss}", session.DateEnded)</span>
+                    }
+                    else
+                    {
+                        <span>present</span>
+                    }
+                </h5>
+                <AuthorizeView Roles="HealthOfficer">
+                    <div class="card-text">Patient name: <strong>@session.Patient?.FullName</strong></div>
+                </AuthorizeView>
+                <AuthorizeView Roles="User">
+                    <div class="card-text">Health officer: <strong>@session.HealthOfficer?.FullName</strong></div>
+                </AuthorizeView>
+                <AuthorizeView Roles="Admin">
+                    <div class="card-text">Health officer: <strong>@session.HealthOfficer?.FullName</strong></div>
+                    <div class="card-text">Patient name: <strong>@session.Patient?.FullName</strong></div>
+                </AuthorizeView>
+                <div class="card-text">Amount paid: <strong>@(new CurrencyConverter(session.Amount).Currency)</strong></div>
+                <a href="health/@session.Id" class="stretched-link"></a>
+            </div>
+        </div>
+    }
+}
+<br />
+
+@code {
+    private List<SessionRecord> SessionRecords { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetSessions();
+    }
+
+    private async Task GetSessions()
+    {
+        try
+        {
+            SessionRecords = await _httpClient.GetFromJsonAsync<List<SessionRecord>>("api/HealthRecords");
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
+}

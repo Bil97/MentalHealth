@@ -1,0 +1,240 @@
+﻿@page "/user-profile"
+@attribute [Authorize]
+
+<h2>Account details</h2>
+
+<div class="card  mx-auto">
+    <div class="card-body">
+
+        <EditForm Model="@_userDetails" OnValidSubmit="UpdateAccount">
+            <DataAnnotationsValidator />
+            @*<ValidationSummary/>*@
+
+            <div class="row p-0">
+                <label class="col-4">Full name: </label>
+                <div class="col-8 mb-3">
+                    @_userDetails.FullName
+                </div>
+            </div>
+            <div class="row p-0">
+                <label class="col-4">Surname: </label>
+                <div class="col-8 mb-3">
+                    <InputText @bind-Value="_userDetails.Surname" class="form-control" placeholder="Your last name" />
+                    <ValidationMessage For="()=>_userDetails.Surname" />
+                </div>
+            </div>
+            <div class="row p-0">
+                <label class="col-4">First name: </label>
+                <div class="col-8 mb-3">
+                    <InputText @bind-Value="_userDetails.FirstName" class="form-control" placeholder="Your first name" />
+                    <ValidationMessage For="()=>_userDetails.FirstName" />
+                </div>
+            </div>
+            <div class="row p-0">
+                <label class="col-4">Other names: </label>
+                <div class="col-8 mb-3">
+                    <InputText @bind-Value="_userDetails.OtherNames" class="form-control" placeholder="Your other names" />
+                    <ValidationMessage For="()=>_userDetails.OtherNames" />
+                </div>
+            </div>
+            <div class="row p-0">
+                <label class="col-4">Email: </label>
+                <div class="col-8 mb-3">
+                    <InputText @bind-Value="_userDetails.Email" class="form-control" placeholder="Your email address" />
+                    <ValidationMessage For="()=>_userDetails.Email" />
+                </div>
+            </div>
+            <div class="row p-0">
+                <label class="col-4">Phonenumber: </label>
+                <div class="col-8 mb-3">
+                    <InputText @bind-Value="_userDetails.Phonenumber" class="form-control" placeholder="Your phonenumber" />
+                    <ValidationMessage For="()=>_userDetails.Phonenumber" />
+                </div>
+            </div>
+            <div class="row p-0">
+                <label class="col-4">ID No: </label>
+                <div class="col-8 mb-3">
+                    <InputText @bind-Value="_userDetails.IdNo" class="form-control" placeholder="Your national Id number or birth certificate" />
+                    <ValidationMessage For="()=>_userDetails.IdNo" />
+                </div>
+            </div>
+            <div class="row p-0">
+                <label class="col-4">Location: </label>
+                <div class="col-8 mb-3">
+                    <label>Location <a href="location-help">Learn how to</a> </label>
+                    <br />
+                    <label>Latitude</label>
+                    <InputNumber @bind-Value="_userDetails.LocationLatitude" class="form-control" placeholder="Your current location" />
+                    <ValidationMessage For="()=>_userDetails.LocationLatitude" />
+                    <br />
+                    <label>Longitude</label>
+                    <InputNumber @bind-Value="_userDetails.LocationLongitude" class="form-control" placeholder="Your current location" />
+                    <ValidationMessage For="()=>_userDetails.LocationLongitude" />
+                </div>
+            </div>
+            <AuthorizeView Roles="HealthOfficer" Context="_context">
+                <div class="row p-0">
+                    <div class="col-4">Occupied</div>
+                    <div class="col-8">
+                        <InputCheckbox @bind-Value="_userDetails.IsOccupied" placeholder="Your current location" />
+                        <label>
+                            (
+                            @if (_userDetails.IsOccupied)
+                            {
+                                <span>Occupied</span>
+                            }
+                            else
+                            {
+                                <span>Not occupied</span>
+                            }
+                            )
+                        </label>
+                    </div>
+                </div>
+            </AuthorizeView>
+
+            <div class="row justify-content-center">
+                <button type="submit" class="btn btn-primary col-sm-5 m-1" disabled="@Submitting">
+                    Update profile
+                    @if (Submitting)
+                    {
+                        <span class="spinner-border spinner-border-sm"></span>
+                    }
+                </button>
+                <button class="btn btn-primary col-sm-5 m-1" data-toggle="modal" data-target="#changePassword">Change Password</button>
+                <AuthorizeView Context="_context">
+                    @if (!_context.User.IsInRole("Admin"))
+                    {
+                        <a href="apply" class="btn btn-primary col-sm-5 m-1">Apply for Therapist</a>
+                        <a href="health" class="btn btn-primary col-sm-5 m-1">Health Record</a>
+                    }
+                </AuthorizeView>
+                <a href="user-profile/logout" class="btn btn-primary col-sm-5 m-1">Log out</a>
+            </div>
+
+        </EditForm>
+        @if (!string.IsNullOrEmpty(Response))
+        {
+            @if (Error == true)
+            {
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" @onclick="() => { Error = null; }" class="close">&times;</button>
+                    @Response
+                </div>
+            }
+            @if (Error == false)
+            {
+                <div class="alert alert-success alert-dismissible">
+                    <button class="close" @onclick="() => { Error = null; }">&times;</button>
+                    @Response
+                </div>
+            }
+        }
+    </div>
+
+</div>
+
+<!-- Change password modal-->
+<div class="modal" id="changePassword">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Change Password</h4>
+                <button type="button" class="close" data-dismiss="modal" @onclick="CloseModal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <ChangePassword />
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Change password modal-->
+
+<br />
+@code {
+    private bool? Error { get; set; }
+    private bool Submitting { get; set; }
+    private string Response { get; set; }
+
+    private UserDetails _userDetails = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetUser();
+    }
+
+    private async Task GetUser()
+    {
+        try
+        {
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+
+            if (authState.User.Identity != null)
+            {
+                var result = await _httpClient.GetAsync($"api/ApplicationUsers/{authState.User.Identity.Name}");
+
+                if (!result.IsSuccessStatusCode)
+                {
+                    Response = await result.Content.ReadAsStringAsync();
+                    Error = true;
+                }
+                else
+                {
+                    Error = null;
+                    using var stream = await result.Content.ReadAsStreamAsync();
+                    _userDetails = await System.Text.Json.JsonSerializer.DeserializeAsync<UserDetails>(stream,
+                        new System.Text.Json.JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        });
+                }
+            }
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+
+    private async Task UpdateAccount()
+    {
+        try
+        {
+            Submitting = true;
+            Error = null;
+            var postResponse = await _httpClient.PutAsJsonAsync($"api/ApplicationUsers/update-account/{_userDetails.Id}", _userDetails);
+            Submitting = false;
+            Response = await postResponse.Content.ReadAsStringAsync();
+
+            if (!postResponse.IsSuccessStatusCode)
+            {
+                Error = true;
+            }
+            else
+            {
+                Error = false;
+                await GetUser();
+            }
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+    }
+
+    private async Task CloseModal()
+    {
+        await GetUser();
+    }
+
+}

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Apply"
+             x:Class="MentalHealth.Mobile.Pages.Profession.Apply">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Frame>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="To apply to be a Therapists, you need to provide legal documents to prove that you are a qualified Therapist."
+                       HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+                <Label Text="Service fee (Amount that clients will pay for your Therapy services" />
+                <Entry x:Name="AmountEntry" TextChanged="AmountEntry_TextChanged"/>
+                <Label Text="Maximum size = 5mb" />
+                <Button x:Name="ChooseFilesButton" Text="Choose files" Clicked="ChooseFilesButton_Clicked"/>
+                <Label x:Name="FilesLabel"/>
+                <Button x:Name="ApplyButton" Text="Apply" Clicked="ApplyButton_Clicked" IsEnabled="False"></Button>
+                <Label x:Name="StateLabel" />
+            </StackLayout>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

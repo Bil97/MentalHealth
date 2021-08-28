@@ -1,0 +1,35 @@
+﻿@page "/location/{Latitude}/{Longitude}"
+@inject IJSRuntime JS
+<h3>Location</h3>
+
+<a class="direction-link" target="_blank" href="//maps.google.com/maps?f=d&amp;daddr=@Latitude,@Longitude&amp;hl=en"> Get Directions</a>
+<!--The div element for the map -->
+<div id="map" style="width:100%; height:400px;"></div>
+
+
+@code {
+    [Parameter] public string Latitude { get; set; }
+    [Parameter] public string Longitude { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Load();
+        }
+    }
+
+    async Task Load()
+    {
+        try
+        {
+            await JS.InvokeAsync<string>("initMap", Convert.ToDouble(Latitude), Convert.ToDouble(Longitude));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+            await Load();
+        }
+
+    }
+}

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Applications"
+             x:Class="MentalHealth.Mobile.Pages.Profession.Applications">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Clicked="RefreshToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="StateLabel" FontSize="Large" HorizontalTextAlignment="Center"/>
+            <ListView x:Name="ApplicationsView" RowHeight="100">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="5">
+                                <Image Source="{Binding User.ImagePath,Converter={x:StaticResource ImageUrlConverter},ConverterParameter=images}" HeightRequest="50" WidthRequest="100" />
+                                <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand">
+                                    <Label Text="{Binding User.FullName}" FontSize="Subtitle"/>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Email"/>
+                                        <Label Text="{Binding User.Email}"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Phone number"/>
+                                        <Label Text="{Binding User.PhoneNumber}"/>
+                                    </StackLayout>
+                                </StackLayout>
+                                <Button Text="Documents" VerticalOptions="CenterAndExpand" HorizontalOptions="EndAndExpand" CommandParameter="{Binding .}" Clicked="DocumentsButton_Clicked"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

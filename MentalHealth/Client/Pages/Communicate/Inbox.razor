@@ -1,0 +1,117 @@
+﻿@page "/inbox"
+@attribute [Authorize]
+@implements IAsyncDisposable
+
+<div>
+    @if (messages == null)
+    {
+        <span class="spinner-border spinner-border-sm"></span>
+        <em>Loading...</em>
+    }
+    else if (messages.Count == 0)
+    {
+        <div class="text-center m-5">
+            There are currently no messages
+        </div>
+    }
+    else
+    {
+        @foreach (var message in messages)
+        {
+            string fullname;
+            string userId;
+            string imageUrl = "img_avatar.jpg";
+            if (message.CurrentUserId != message.SenderAId)
+            {
+                fullname = message.SenderA.FullName;
+                userId = message.SenderA.Id;
+                if (!string.IsNullOrEmpty(message.SenderA.ImagePath)) { imageUrl = $"{_navigation.BaseUri}api/ApplicationUser/image/{message.SenderA.ImagePath}"; }
+            }
+            else
+            {
+                fullname = message.SenderB.FullName;
+                userId = message.SenderB.Id;
+                if (!string.IsNullOrEmpty(message.SenderB.ImagePath)) { imageUrl = $"{_navigation.BaseUri}api/ApplicationUser/image/{message.SenderB.ImagePath}"; }
+            }
+            <div class="card m-2 p-2 w-100">
+                <div class="media">
+                    <img src="@imageUrl" class="align-self-center mr-3" style="width:50px">
+                    <div class="media-body">
+                        @*<button class="btn btn-danger float-right" @onclick="()=>Delete(message.SessionId)">Delete</button>*@
+                        <a href="chat/@userId/@message.SessionId">
+                            <h4 class="card-title">@fullname</h4>
+                            <div class="card-text">@message.Message</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<br />
+
+@code {
+private HubConnection hubConnection;
+private List<MentalHealth.Shared.Models.Chat> messages;
+
+protected override async Task OnInitializedAsync()
+{
+    try
+    {
+        hubConnection = new HubConnectionBuilder().WithUrl(_navigation.ToAbsoluteUri("/chathub")).Build();
+        hubConnection.On<string>("ReceiveMessage", async (notify) =>
+        {
+            await GetMessages();
+            StateHasChanged();
+        });
+        await hubConnection.StartAsync();
+        await GetMessages();
+    }
+    catch (AccessTokenNotAvailableException ex) { ex.Redirect(); }
+    catch (Exception ex) { Console.WriteLine("Oninitialized error: " + ex.Message); }
+}
+
+public async ValueTask DisposeAsync()
+{
+    try
+    {
+        await hubConnection.DisposeAsync();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("DisposeAsync Error: " + ex.Message);
+    }
+}
+
+private async Task GetMessages()
+{
+    try
+    {
+        messages = await _httpClient.GetFromJsonAsync<List<MentalHealth.Shared.Models.Chat>>($"api/chats/inbox");
+    }
+    catch (AccessTokenNotAvailableException ex)
+    {
+        ex.Redirect();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("GetMessages error:" + ex.Message);
+    }
+}
+
+private async Task Delete(string sessionId)
+{
+    try
+    {
+        await _httpClient.DeleteAsync($"api/chats/clear/{sessionId}");
+    }
+    catch (AccessTokenNotAvailableException ex)
+    {
+        ex.Redirect();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Delete Error: " + ex.Message);
+    }
+}
+}

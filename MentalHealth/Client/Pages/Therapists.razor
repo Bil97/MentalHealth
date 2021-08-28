@@ -1,0 +1,71 @@
+﻿@page "/therapists"
+<h3 class="text-center">Therapists currently unoccupied</h3>
+
+<div>
+    @if (Professions == null)
+    {
+        <span class="spinner-border spinner-border-sm"></span>
+        <em>Loading...</em>
+    }
+    else if (Professions.Count == 0)
+    {
+        <div class="text-center m-5">
+            There are currently no registerd Therapists
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var profession in Professions)
+            {
+                string imageUrl = "img_avatar.jpg";
+                if (!string.IsNullOrEmpty(profession.User.ImagePath)) { imageUrl = $"{_navigation.BaseUri}api/ApplicationUser/image/{profession.User.ImagePath}"; }
+                <div class="card m-2 p-2 w-100">
+                    <div class="media">
+                        <img src="@imageUrl" class="align-self-center mr-3" style="width:100px">
+                        <div class="media-body">
+                            <h4 class="card-title">@profession.User.FullName</h4>
+                            <div class="card-text">Email: <a href="mailto:@profession.User.Email">@profession.User.Email</a></div>
+                            <div class="card-text d-block">
+                                Phonenumber: <a href="tel:@profession.User.Phonenumber">@profession.User.Phonenumber</a>
+                                @if (profession.User?.UserName != user.Identity.Name && user.IsInRole("User"))
+                                {
+                                    <span class="float-right">
+                                        <a href="transaction/@profession.Id" class="btn btn-secondary">Consult { @(new CurrencyConverter(profession.ServiceFee).Currency) }</a>
+                                    </span>
+                                }
+                            </div>
+                            <div class="card-text"><a href="location/@profession.User.LocationLatitude/@profession.User.LocationLongitude">Locate on Google maps</a></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+<br />
+
+@code {
+
+    private List<UserProfession> Professions { get; set; }
+    private UserProfession _profession = new UserProfession();
+    ClaimsPrincipal user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+        await GetProfessions();
+    }
+
+    private async Task GetProfessions()
+    {
+        try
+        {
+            Professions = await _httpClient.GetFromJsonAsync<List<UserProfession>>($"api/professions/profession/therapist");
+        }
+        catch (AccessTokenNotAvailableException ex) { ex.Redirect(); }
+        catch (Exception ex) { Console.WriteLine("GetProfessionsError: " + ex.Message); };
+    }
+
+}

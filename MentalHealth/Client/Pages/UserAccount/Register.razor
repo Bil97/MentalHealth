@@ -1,0 +1,147 @@
+﻿@page "/user-profile/create-account"
+@page "/user-profile/create-account/{ReturnUrl}"
+
+<div class="card mx-auto" style="max-width:768px;">
+
+    <div class="card-header">
+        <h2>Create a new account</h2>
+    </div>
+
+    <div class="card-body">
+
+        @if (Error == true)
+        {
+            <div class="alert alert-warning alert-dismissible">
+                <button type="button" @onclick="() => { Error = null; }" class="close">&times;</button>
+                @Response
+            </div>
+        }
+        @if (Error == false)
+        {
+            <div class="alert alert-success alert-dismissible">
+                <button class="close" @onclick="() => { Error = null; }">&times;</button>
+                @Response
+            </div>
+        }
+        <EditForm Model="@_register" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            @*<ValidationSummary />*@
+
+            <div class="form-group">
+                <label>Surname: </label>
+                <InputText @bind-Value="_register.Surname" class="form-control" placeholder="Your surname" />
+                <ValidationMessage For="()=>_register.Surname" />
+            </div>
+            <div class="form-group">
+                <label>First name: </label>
+                <InputText @bind-Value="_register.FirstName" class="form-control" placeholder="Your first name" />
+                <ValidationMessage For="()=>_register.FirstName" />
+            </div>
+            <div class="form-group">
+                <label>Other names: </label>
+                <InputText @bind-Value="_register.OtherNames" class="form-control" placeholder="Your other names" />
+                <ValidationMessage For="()=>_register.OtherNames" />
+            </div>
+            <div class="form-group">
+                <label>Email: </label>
+                <InputText @bind-Value="_register.Email" class="form-control" placeholder="Your email address" />
+                <ValidationMessage For="()=>_register.Email" />
+            </div>
+            <div class="form-group">
+                <label>Phone number: </label>
+                <InputText @bind-Value="_register.PhoneNumber" class="form-control" placeholder="Your phone number" />
+                <ValidationMessage For="()=>_register.PhoneNumber" />
+            </div>
+            <div class="form-group">
+                <label>ID No/ Birth certificate No: </label>
+                <InputText @bind-Value="_register.IdNo" class="form-control" placeholder="Your ID No/ Birth certificate No" />
+                <ValidationMessage For="()=>_register.IdNo" />
+            </div>
+
+            <div class="form-group">
+                <label>Location <a href="location-help" target="_blank">Learn how to</a> </label>
+                <br />
+                <label>Latitude: </label>
+                <InputNumber @bind-Value="_register.LocationLatitude" class="form-control" placeholder="Your current location" />
+                <ValidationMessage For="()=>_register.LocationLatitude" />
+                <br />
+                <label>Longitude: </label>
+                <InputNumber @bind-Value="_register.LocationLongitude" class="form-control" placeholder="Your current location" />
+                <ValidationMessage For="()=>_register.LocationLongitude" />
+            </div>
+            <div class="form-group">
+                <label>Password: </label>
+                <InputText type="password" @bind-Value="_register.Password" class="form-control" placeholder="Your password" />
+                <ValidationMessage For="()=>_register.Password" />
+            </div>
+
+            <div class="form-group">
+                <label>Confirm password: </label>
+                <InputText type="password" @bind-Value="_register.ConfirmPassword" class="form-control" placeholder="Confirm your password" />
+                <ValidationMessage For="()=>_register.ConfirmPassword" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" disabled="@Submitting">
+                Register
+                @if (Submitting)
+                {
+                    <span class="spinner-border spinner-border-sm"></span>
+                }
+            </button>
+            @if (ReturnUrl != null)
+            {
+                var url = $"{Uri.EscapeDataString(ReturnUrl)}";
+                <a href="user-profile/login/@url" class="btn text-primary">Login</a>
+            }
+            else
+            {
+                <a href="user-profile/login" class="btn text-primary">Login</a>
+            }
+        </EditForm>
+
+    </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public string ReturnUrl { get; set; }
+
+    private bool? Error { get; set; }
+    private bool Submitting { get; set; }
+    private string Response { get; set; }
+
+    private MentalHealth.Shared.Models.UserAccount.Register _register = new();
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            Submitting = true;
+            var result = await _httpClient.PostAsJsonAsync($"api/ApplicationUsers/create-account", _register);
+
+            if (!result.IsSuccessStatusCode)
+            {
+                Submitting = false;
+                Error = true;
+                Response = await result.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                var registerResult = await result.Content.ReadAsStringAsync();
+                await _localStorage.SetItemAsync("authToken", registerResult);
+                ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(registerResult);
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", registerResult);
+
+                Error = false;
+                ReturnUrl ??= "/";
+                _navigation.NavigateTo(ReturnUrl);
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}

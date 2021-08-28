@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:imageUrl="clr-namespace:MentalHealth.Mobile.Extensions"
+             Title="Inbox"
+             x:Class="MentalHealth.Mobile.Pages.Communicate.Inbox">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="StateLabel" FontSize="Large" HorizontalTextAlignment="Center" />
+            <ListView x:Name="MessagesView" ItemTapped="MessagesView_ItemTapped" RowHeight="60">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="5">
+                                <Image Source="{Binding .,Converter={x:StaticResource ChatConverter},ConverterParameter=imageUrl}" Aspect="AspectFit" VerticalOptions="FillAndExpand" WidthRequest="50"/>
+                                <StackLayout>
+                                    <Label Text="{Binding ., Converter={x:StaticResource ChatConverter},ConverterParameter=fullname}" FontSize="Subtitle"/>
+                                    <Label Text="{Binding Message}" FontSize="Caption"/>
+                                </StackLayout>
+                                <!-- <Button x:Name="DeleteButton" Text="Delete" VerticalOptions="CenterAndExpand" HorizontalOptions="EndAndExpand" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked"/> -->
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

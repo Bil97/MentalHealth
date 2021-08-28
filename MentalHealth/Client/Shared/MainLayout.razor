@@ -1,0 +1,61 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+
+    <div class="main">
+        <header class="bg-light pt-2 sticky-top">
+            <div>
+                <div class="btn-group btn-group-sm float-right">
+                    <a href="signsofanxiety" class="btn btn-primary">Signs of anxiety</a>
+                    <a href="quicktips" class="btn btn-primary">Quick tips</a>
+                    <a href="quickrelief" class="btn btn-primary">Quick relief</a>
+                </div>
+                <h4 class="text-center">MentalHealth</h4>
+            </div>
+            <ul class="nav nav-tabs nav-justified">
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">Home</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="therapists">Therapists</NavLink>
+                </li>
+                <AuthorizeView Roles="Admin">
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="applications">Applications</NavLink>
+                    </li>
+                </AuthorizeView>
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="inbox">Inbox</NavLink>
+                        </li>
+                    </Authorized>
+                </AuthorizeView>
+                <li class="nav-item">
+
+                    <AuthorizeView>
+                        <Authorized>
+                            <NavLink class="nav-link" href="user-profile">@context.User.Identity.Name</NavLink>
+                        </Authorized>
+                        <NotAuthorized>
+                            <NavLink class="nav-link" href="user-profile/login">Login</NavLink>
+                        </NotAuthorized>
+                    </AuthorizeView>
+
+                </li>
+            </ul>
+        </header>
+
+        <div class="content mb-2 bg-white">
+            @Body
+        </div>
+
+        <footer class="pt-2">
+            <h6 class="text-center">MentalHealth &copy 2021</h6>
+        </footer>
+
+    </div>
+</div>
+@code{
+
+}

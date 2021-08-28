@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MentalHealth.Mobile.Pages.Transaction">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="TitleLabel" FontSize="Large" HorizontalTextAlignment="Center"/>
+            <Label x:Name="PhonenumberLabel" HorizontalTextAlignment="Center"/>
+            <Button x:Name="PayButton" Text="Pay with M-Pesa" Clicked="PayButton_Clicked"/>
+            <Label x:Name="StateLabel" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

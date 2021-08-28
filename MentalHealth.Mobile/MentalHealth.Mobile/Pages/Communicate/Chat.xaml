@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Chat"
+             x:Class="MentalHealth.Mobile.Pages.Communicate.Chat">
+    <ContentPage.Content>
+        <Grid>
+            <Label x:Name="NotifyLabel" TextColor="Red" IsVisible="false" FontSize="Large" Text="You are not logged in" HorizontalOptions="CenterAndExpand"/>
+            <Frame x:Name="MainFrame">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label x:Name="StateLabel" FontSize="Large" HorizontalTextAlignment="Center" />
+                    </StackLayout>
+                    <ListView x:Name="MessagesView" HasUnevenRows="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width=".5*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Frame Padding="5" HorizontalOptions="{Binding .,Converter={x:StaticResource ChatConverter},ConverterParameter=position}"
+                                  BorderColor="{Binding .,Converter={x:StaticResource ChatConverter},ConverterParameter=background}">
+                                            <StackLayout>
+                                                <Label Text="{Binding .,Converter={x:StaticResource ChatConverter},ConverterParameter=username}" FontSize="Subtitle"/>
+                                                <Label Text="{Binding Message}" FontSize="Caption"/>
+                                            </StackLayout>
+                                        </Frame>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <StackLayout Orientation="Horizontal">
+                        <Editor x:Name="MessageEntry" HeightRequest="70" HorizontalOptions="FillAndExpand"/>
+                        <Button x:Name="SendButton" Text="Send" VerticalOptions="Center" HorizontalOptions="End" Clicked="SendButton_Clicked"/>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

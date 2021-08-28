@@ -1,0 +1,230 @@
+﻿@page "/chat/{UserId}/{SessionId}"
+@attribute [Authorize]
+@implements IAsyncDisposable
+
+@if (Profession == null)
+{
+    <em>Loading...</em>
+}
+else
+{
+    <div class="card w-100 p-1">
+        <div class="card-header">
+            <h4 class="card-title">@user?.FullName</h4>
+        </div>
+        @if (Session?.IsComplete == true)
+        {
+            <p class="text-center">Session closed</p>
+        }
+        else
+        {
+            <div class="card-body p-0">
+                <div class="form-group">
+                    <label class="w-100">
+                        Message:
+                        <textarea @bind="messageInput" class="form-control" />
+                    </label>
+                </div>
+
+                <button @onclick="Send" class="btn btn-primary" disabled="@Submitting">Send</button>
+                <AuthorizeView Roles="HealthOfficer">
+                    <a class="btn btn-primary" href="health/add/@SessionId">Add health record</a>
+                    <button @onclick="CloseSession" class="btn btn-warning" disabled="@Submitting">Close this session</button>
+                </AuthorizeView>
+                <hr>
+
+                @if (messages == null)
+                {
+                    <span class="spinner-border spinner-border-sm"></span>
+                    <em>Loading...</em>
+                }
+                else if (messages.Count == 0)
+                {
+                    <div class="text-center m-5">
+                        There are currently no messages
+                    </div>
+                }
+                else
+                {
+                    @foreach (var message in messages)
+                    {
+                        string username;
+                        string position;
+                        string background;
+                        if (message.CurrentUserId == message.SenderAId)
+                        {
+                            username = message.SenderB.FullName;
+                        }
+                        else
+                        {
+                            username = message.SenderA.FullName;
+                        }
+                        if (message.CurrentUserId == message.SenderId)
+                        {
+                            username = message.Sender.FullName;
+                            position = "float-left";
+                            background = "bg-light";
+                        }
+                        else
+                        {
+                            position = "float-right";
+                            background = "bg-white";
+                        }
+
+                        <div class="w-100">
+                            <div class="card m-2 p-2 @position @background w-50">
+                                <div class="card-body p-0">
+                                    <h4 class="card-title">@username</h4>
+                                    <div class="card-text" style="white-space:pre-wrap">@message.Message</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+}
+<br />
+
+@code {
+    [Parameter]
+    public string UserId { get; set; }
+    [Parameter]
+    public string SessionId { get; set; }
+    private HubConnection hubConnection;
+    private string messageInput;
+    private List<MentalHealth.Shared.Models.Chat> messages;
+    private UserProfession Profession { get; set; }
+    private bool Submitting { get; set; }
+    private MentalHealth.Shared.Models.Chat chat = new();
+    private UserDetails user = new();
+    private SessionRecord Session { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await GetProfession();
+
+            if (Profession != null)
+            {
+                if (!Profession.ServiceFeePaid)
+                {
+                    _navigation.NavigateTo($"transaction/{Profession.Id}/{UserId}");
+                }
+                else
+                {
+                    hubConnection = new HubConnectionBuilder().WithUrl(_navigation.ToAbsoluteUri("/chathub")).Build();
+                    hubConnection.On<string>("ReceiveMessage", async (chat) =>
+                    {
+                        await GetMessages();
+                        StateHasChanged();
+                    });
+                    await hubConnection.StartAsync();
+                    await GetUser();
+                    await GetMessages();
+                }
+            }
+        }
+        catch (AccessTokenNotAvailableException ex) { ex.Redirect(); }
+        catch (Exception ex) { Console.WriteLine("Oninitialized error: " + ex.Message); }
+
+    }
+
+    private async Task GetProfession()
+    {
+        try
+        {
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+
+            Profession = await _httpClient.GetFromJsonAsync<UserProfession>($"api/professions/recipient/{UserId}");
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("GetProfession Error:" + ex.Message);
+        }
+    }
+
+    async Task Send()
+    {
+        try
+        {
+            Submitting = true;
+
+            if (string.IsNullOrWhiteSpace(messageInput)) return;
+            if (messages != null && messages.Count > 0)
+                chat = messages.FirstOrDefault();
+            else chat = new()
+            {
+                SenderBId = user.Id,
+                SessionId = SessionId
+            };
+
+            chat.Message = messageInput;
+
+            await _httpClient.PostAsJsonAsync<MentalHealth.Shared.Models.Chat>($"api/chats", chat);
+            await hubConnection.SendAsync("SendMessage", "message");
+            messageInput = string.Empty;
+            Submitting = false;
+        }
+        catch (AccessTokenNotAvailableException ex) { ex.Redirect(); }
+        catch (Exception ex) { Submitting = false; Console.WriteLine("Send error:" + ex.Message); }
+    }
+
+    async Task CloseSession()
+    {
+        try
+        {
+            Submitting = true;
+            await _httpClient.GetStringAsync($"api/HealthRecords/close-session/{SessionId}");
+            Submitting = false;
+            _navigation.NavigateTo("inbox");
+        }
+        catch (AccessTokenNotAvailableException ex) { ex.Redirect(); }
+        catch (Exception ex) { Submitting = false; Console.WriteLine("Send error:" + ex.Message); }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await hubConnection.DisposeAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("DisposeAsync Error: " + ex.Message);
+        }
+    }
+
+    private async Task GetUser()
+    {
+        try
+        {
+            user = await _httpClient.GetFromJsonAsync<UserDetails>($"api/ApplicationUsers/userId/{UserId}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("GetUser error:" + ex.Message);
+        }
+    }
+
+    private async Task GetMessages()
+    {
+        try
+        {
+            var authstate = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            messages = await _httpClient.GetFromJsonAsync<List<MentalHealth.Shared.Models.Chat>>($"api/chats/{SessionId}");
+            Session = messages?.FirstOrDefault().SessionRecord;
+        }
+        catch (Exception ex)
+        {
+            messages = new();
+            Console.WriteLine("GetMessages error:" + ex.Message);
+        }
+    }
+}

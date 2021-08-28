@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MentalHealth.Mobile.Pages.UserAccount.Profile"
+             Title="Profile">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Grid>
+            <Label x:Name="NotifyLabel" TextColor="Red" IsVisible="false" FontSize="Large" Text="You are not logged in" HorizontalOptions="CenterAndExpand"/>
+            <Frame x:Name="MainFrame">
+                <ScrollView>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Full name:"  FontSize="Large" />
+                        <Label Text="{Binding FullName}" Grid.Row="0" Grid.Column="1"  FontSize="Large" />
+
+                        <Label Text="Surname:" Grid.Row="1" Grid.Column="0" />
+                        <Entry x:Name="SurnameEntry" Text="{Binding Surname}" Grid.Row="1" Grid.Column="1"
+                       Placeholder=" Your surname" TextChanged="Entry_TextChanged" />
+                        <Label x:Name="SurnameLabel" Text="*" TextColor="Red" Grid.Row="1" Grid.Column="2" />
+
+                        <Label Text="First name:" Grid.Row="2" Grid.Column="0" />
+                        <Entry x:Name="FirstNameEntry" Text="{Binding FirstName}" Grid.Row="2" Grid.Column="1"
+                       Placeholder=" Your first name" TextChanged="Entry_TextChanged" />
+                        <Label x:Name="FirstNameLabel" Text="*" TextColor="Red" Grid.Row="2" Grid.Column="2" />
+
+                        <Label Text="Other names:" Grid.Row="3" Grid.Column="0" />
+                        <Entry x:Name="OtherNamesEntry" Text="{Binding OtherNames}" Grid.Row="3" Grid.Column="1"
+                       Placeholder=" Your other names" TextChanged="Entry_TextChanged" />
+
+                        <Label Text="Email:" Grid.Row="4" Grid.Column="0" />
+                        <Entry x:Name="EmailEntry" Text="{Binding Email}" Grid.Row="4" Grid.Column="1"
+                       Placeholder=" Your email address" TextChanged="Entry_TextChanged" />
+                        <Label x:Name="EmailLabel" Text="*" TextColor="Red" Grid.Row="4" Grid.Column="2" />
+
+                        <Label Text="Phone number:" Grid.Row="5" Grid.Column="0" />
+                        <Entry x:Name="PhoneNumberEntry" Text="{Binding Phonenumber}" Grid.Row="5" Grid.Column="1"
+                       Placeholder=" Your phone number" TextChanged="Entry_TextChanged" />
+                        <Label x:Name="PhoneNumberLabel" Text="*" TextColor="Red" Grid.Row="5" Grid.Column="2" />
+
+                        <Label Text="ID No:" Grid.Row="6" Grid.Column="0" />
+                        <Entry x:Name="IdNoEntry" Text="{Binding IdNo}" Grid.Row="6" Grid.Column="1"
+                       Placeholder=" Your National ID number or birth certificate" TextChanged="Entry_TextChanged" />
+                        <Label x:Name="IdNoLabel" Text="*" TextColor="Red" Grid.Row="6" Grid.Column="2" />
+
+                        <Label Text="Location:" Grid.Row="7" Grid.Column="0"  HorizontalOptions="Start" IsVisible="False"/>
+                        <StackLayout Grid.Row="7" Grid.Column="1"  Grid.ColumnSpan="2"  IsVisible="False">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Latitude:" HorizontalOptions="Start"/>
+                                <Button Text="Learn how to" Clicked="LearnHowToButton_Clicked"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                <Entry x:Name="LatitudeEntry" Text="{Binding LocationLatitude}"
+                       Placeholder=" Your location latitude" TextChanged="Entry_TextChanged" />
+                                <Label x:Name="LatitudeLabel" Text="*" TextColor="Red" HorizontalOptions="End" />
+                            </StackLayout>
+                            <Label Text="Longitude:" HorizontalOptions="Start"/>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                <Entry x:Name="LocationLongitudeEntry" Text="{Binding LocationLongitude}"
+                       Placeholder=" Your location longitude" TextChanged="Entry_TextChanged" />
+                                <Label x:Name="LocationLongitudeLabel" Text="*" TextColor="Red" HorizontalOptions="End" />
+                            </StackLayout>
+                        </StackLayout>
+
+                        <Button x:Name="UpdateProfileButton" Text="Update profile" Grid.Row="8" Grid.Column="0"
+                        Grid.ColumnSpan="3" Clicked="UpdateProfileButton_Clicked" />
+                        <Button x:Name="ChangePasswordButton" Text="Change password" Grid.Row="9" Grid.Column="0"
+                        Grid.ColumnSpan="3" Clicked="ChangePasswordButton_Clicked" />
+                        <Button x:Name="ApplyForTherapistButton" Text="Apply for Therapist" Grid.Row="10" Grid.Column="0"
+                        Grid.ColumnSpan="3" Clicked="ApplyButton_Clicked" />
+                        <Button x:Name="HealthRecordButton" Text="Health Record" Grid.Row="11" Grid.Column="0"
+                        Grid.ColumnSpan="3" Clicked="HealthRecordButton_Clicked" />
+                        <Button x:Name="LogoutButton" Text="Logout" Grid.Row="12" Grid.Column="0"
+                        Grid.ColumnSpan="3" Clicked="LogoutButton_Clicked" />
+
+                        <Label x:Name="StateLabel" Grid.Row="13" Grid.ColumnSpan="3" Grid.Column="0" />
+                    </Grid>
+                </ScrollView>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

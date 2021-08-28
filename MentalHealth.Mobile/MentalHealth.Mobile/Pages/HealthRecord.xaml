@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Health Record"
+             x:Class="MentalHealth.Mobile.Pages.HealthRecord">
+    <ContentPage.Content>
+        <Frame>
+            <StackLayout>
+                <Label x:Name="StateLabel" FontSize="Large" HorizontalTextAlignment="Center" />
+                <ListView x:Name="HealthRecordsView" HasUnevenRows="True" ItemTapped="HealthRecordsView_ItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Label Text="{Binding .,Converter={x:StaticResource PeriodConverter}, ConverterParameter=period}" FontSize="Medium"/>
+                                    <StackLayout Orientation="Horizontal" IsVisible="{Binding .,Converter={x:StaticResource PeriodConverter}, ConverterParameter=healthOfficervisibility}">
+                                        <Label Text="Patient name: "/>
+                                        <Label Text="{Binding .,Converter={x:StaticResource PeriodConverter}, ConverterParameter=healthOfficer}" FontSize="Subtitle"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal" IsVisible="{Binding .,Converter={x:StaticResource PeriodConverter}, ConverterParameter=patientvisibility}">
+                                        <Label Text="Health officer: "/>
+                                        <Label Text="{Binding .,Converter={x:StaticResource PeriodConverter}, ConverterParameter=user}" FontSize="Subtitle"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Amount paid: "/>
+                                        <Label Text="{Binding .,Converter={x:StaticResource PeriodConverter}, ConverterParameter=amount}" FontSize="Subtitle"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<custom:CustomTabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                         Title="Mental Health"
+                         xmlns:pages="clr-namespace:MentalHealth.Mobile.Pages"
+                         xmlns:user="clr-namespace:MentalHealth.Mobile.Pages.UserAccount"
+                         xmlns:custom="clr-namespace:MentalHealth.Mobile.Custom"
+                         xmlns:ext="clr-namespace:MentalHealth.Mobile.Extensions"
+            x:Class="MentalHealth.Mobile.MainPage">
+    <TabbedPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0" />
+        </OnPlatform>
+    </TabbedPage.Padding>
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem x:Name="SignsToolBar" x:FieldModifier="public" Text="Signs" Clicked="SignsToolBar_Clicked" />
+        <ToolbarItem x:Name="TipsToolBar" x:FieldModifier="public" Text="Tips" Clicked="TipsToolBar_Clicked" />
+        <ToolbarItem x:Name="ReliefToolBar" x:FieldModifier="public" Text="Relief" Clicked="ReliefToolBar_Clicked" />
+        <ToolbarItem x:Name="LoginToolBar" x:FieldModifier="public" Text="Login" Clicked="LoginToolBar_Clicked" />
+    </TabbedPage.ToolbarItems>
+
+    <pages:HomePage x:Name="HomePage" x:FieldModifier="public"/>
+    <pages:Therapists x:Name="TherapistsPage" x:FieldModifier="public"/>
+    <user:Profile x:Name="ProfilePage"/>
+
+</custom:CustomTabbedPage>

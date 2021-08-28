@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ext="clr-namespace:MentalHealth.Mobile.Extensions"
+             Title="Signs of Anxiety"
+             x:Class="MentalHealth.Mobile.Pages.SignsOfAnxiety">
+    <ContentPage.Content>
+        <ScrollView>
+            <Frame BorderColor="Gray">
+                <StackLayout>
+                        <Label Text="Signs of Anxiety" FontSize="Title" />
+                        <Label Text="People with anxiety tend to experience symptoms in the following areas."/>
+                        <Label Text="Body- what we feel Physically or emotionally"/>
+                        <Label Text="Mind-what we think"/>
+                        <Label Text="Behavior- what we do."/>
+                    <Image Source="{ext:ImageResource Source=MentalHealth.Mobile.images.body.png }" Aspect="AspectFit"/>
+                    <Image Source="{ext:ImageResource Source=MentalHealth.Mobile.images.mind.png }" Aspect="AspectFit"/>
+                    <Image Source="{ext:ImageResource Source=MentalHealth.Mobile.images.behaviours.png }" Aspect="AspectFit"/>
+                </StackLayout>
+            </Frame>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

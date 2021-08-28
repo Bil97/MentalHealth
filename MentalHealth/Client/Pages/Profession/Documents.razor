@@ -1,0 +1,151 @@
+﻿@page "/documents/{ProfessionId}/{UserId}"
+@attribute [Authorize(Roles = "Admin")]
+
+<div>
+    @if (UserProfessions == null)
+    {
+        <span class="spinner-border spinner-border-sm"></span>
+        <em>Loading...</em>
+    }
+    else if (UserProfessions.Count == 0)
+    {
+        <div class="text-center m-5">
+            There are no documents submitted
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-header">
+                <h3>Documents</h3>
+            </div>
+            <div class="card-body">
+                <div class="card-title">@UserProfessions.FirstOrDefault()?.User.FullName</div>
+                @foreach (var profession in UserProfessions)
+                {
+                    string link = $"api/profession/document/{profession.DocumentPath}";
+                    <div class="card-text">
+                        <a href="@link" download target="_top">@profession.DocumentPath</a>
+                    </div>
+                }
+            </div>
+            <div class="m-1">
+                <button class="btn btn-primary" @onclick="Approve" disabled="@Submitting">
+                    Approve
+                    @if (Submitting)
+                    {
+                        <span class="spinner-border spinner-border-sm"></span>
+                    }
+                </button>
+            </div>
+            <div class="m-1">
+                <EditForm Model="new UserProfession()" OnValidSubmit="Reject">
+                    <label>Reason for rejection</label>
+                    <InputTextArea class="form-control" @bind-Value="_reason" required />
+                    <button class="btn btn-danger m-1" disabled="@Submitting">
+                        Reject
+                        @if (Submitting)
+                        {
+                            <span class="spinner-border spinner-border-sm"></span>
+                        }
+                    </button>
+                </EditForm>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Response))
+        {
+            @if (Error == true)
+            {
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" @onclick="(() => { Error = null; })" class="close">&times;</button>
+                    @Response
+                </div>
+            }
+            @if (Error == false)
+            {
+                <div class="alert alert-success alert-dismissible">
+                    <button class="close" @onclick="(() => { Error = null; })">&times;</button>
+                    @Response
+                </div>
+            }
+
+        }
+    }
+
+</div>
+
+@code {
+    [Parameter]
+    public string ProfessionId { get; set; }
+    [Parameter]
+    public string UserId { get; set; }
+    private bool? Error { get; set; }
+    private bool Submitting { get; set; }
+    private string Response { get; set; }
+
+    private string _reason = "";
+
+    private List<UserProfession> UserProfessions { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetDocuments();
+    }
+
+    private async Task GetDocuments()
+    {
+        try
+        {
+            var userProfessions = await _httpClient.GetFromJsonAsync<List<UserProfession>>($"api/professions/documents/{UserId}");
+            UserProfessions = userProfessions?.Where(x => x.ProfessionId == ProfessionId).ToList();
+        }
+        catch (AccessTokenNotAvailableException ex) { ex.Redirect(); }
+
+        catch (Exception ex) { Console.WriteLine($"Error: {ex.Message}"); }
+    }
+
+    private async Task Approve()
+    {
+        try
+        {
+            Submitting = true;
+            var content = new MultipartFormDataContent { { new StringContent(ProfessionId), "professionId" }, { new StringContent(UserId), "userId" } };
+            var result = await _httpClient.PostAsync($"api/professions/approve", content);
+            Submitting = false;
+            Response = await result.Content.ReadAsStringAsync();
+            if (result.IsSuccessStatusCode) _navigation.NavigateTo("applications");
+            else Error = false;
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("ApproveError: " + ex.Message);
+        }
+    }
+
+    private async Task Reject()
+    {
+        try
+        {
+            Submitting = true;
+            var content = new MultipartFormDataContent { { new StringContent(ProfessionId), "professionId" }, { new StringContent(UserId), "userId" }, { new StringContent(_reason), "reason" } };
+            var result = await _httpClient.PostAsync($"api/professions/reject", content);
+            Submitting = false;
+            Response = await result.Content.ReadAsStringAsync();
+            Error = !result.IsSuccessStatusCode;
+        }
+        catch (AccessTokenNotAvailableException ex)
+        {
+            ex.Redirect();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("RejectError: " + ex.Message);
+        }
+    }
+
+}

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             Title="Register"
+             x:Class="MentalHealth.Mobile.Pages.UserAccount.Register">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Frame BorderColor="LightGray"
+                              Margin="20" CornerRadius="10"
+               VerticalOptions="CenterAndExpand">
+            <ScrollView>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Register" FontSize="Large" HorizontalTextAlignment="Center"/>
+                    </StackLayout>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Surname" VerticalOptions="CenterAndExpand" />
+                        <Entry x:Name="SurnameEntry" Grid.Row="0" Grid.Column="1" Text="{Binding Surname}" Placeholder="Your surname" TextChanged="Entry_TextChanged" />
+                        <Label x:Name="SurnameLabel" Grid.Row="0" Grid.Column="2" Text="*" TextColor="Red" />
+
+                        <Label Grid.Row="1" Grid.Column="0" Text="First name" VerticalOptions="CenterAndExpand" />
+                        <Entry x:Name="FirstNameEntry" Grid.Row="1" Grid.Column="1" Text="{Binding FirstName}" Placeholder="Your first name" TextChanged="Entry_TextChanged" />
+                        <Label x:Name="FirstNameLabel" Grid.Row="1" Grid.Column="2" Text="*" TextColor="Red" />
+
+                        <Label Grid.Row="2" Grid.Column="0" Text="Other names" VerticalOptions="CenterAndExpand" />
+                        <Entry x:Name="OtherNamesEntry" Grid.Row="2" Grid.Column="1" Text="{Binding OtherNames}" Placeholder="Your other names" TextChanged="Entry_TextChanged" />
+
+                        <Label Grid.Row="3" Grid.Column="0" Text="Email" VerticalOptions="CenterAndExpand"/>
+                        <Entry x:Name="EmailEntry" Grid.Row="3" Grid.Column="1" Text="{Binding Email}" Placeholder="Your email address"  TextChanged="Entry_TextChanged" />
+                        <Label x:Name="EmailLabel" Grid.Row="3" Grid.Column="2" Text="*" TextColor="Red" />
+
+                        <Label Grid.Row="4" Grid.Column="0" Text="Phone number" VerticalOptions="CenterAndExpand" />
+                        <Entry x:Name="PhoneNumberEntry" Grid.Row="4" Grid.Column="1"  Text="{Binding PhoneNumber}" Placeholder="Your phone number"  TextChanged="Entry_TextChanged" />
+                        <Label x:Name="PhoneNumberLabel" Grid.Row="4" Grid.Column="2" Text="*" TextColor="Red" />
+
+                        <Label Grid.Row="5" Grid.Column="0" Text="ID No/ Birth certificate No" VerticalOptions="CenterAndExpand" />
+                        <Entry x:Name="IdNoEntry" Grid.Row="5" Grid.Column="1" Text="{Binding IdNo}" Placeholder="Your ID No/ Birth certificate No"  TextChanged="Entry_TextChanged" />
+                        <Label x:Name="IdNoLabel" Grid.Row="5" Grid.Column="2" Text="*" TextColor="Red" />
+
+                        <Label Text="Location:" Grid.Row="6" Grid.Column="0" HorizontalOptions="Start"/>
+                        <StackLayout Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Latitude:" HorizontalOptions="Start"/>
+                                <Button Text="Learn how to" Clicked="LearnHowToButton_Clicked"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                <Entry x:Name="LatitudeEntry" Text="{Binding LocationLatitude}"
+                       Placeholder=" Your location latitude" TextChanged="Entry_TextChanged" />
+                                <Label x:Name="LatitudeLabel" Text="*" TextColor="Red" HorizontalOptions="End" />
+                            </StackLayout>
+                            <Label Text="Longitude:" HorizontalOptions="Start"/>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                <Entry x:Name="LocationLongitudeEntry" Text="{Binding LocationLongitude}"
+                       Placeholder=" Your location longitude" TextChanged="Entry_TextChanged" />
+                                <Label x:Name="LocationLongitudeLabel" Text="*" TextColor="Red" HorizontalOptions="End" />
+                            </StackLayout>
+                        </StackLayout>
+
+                        <Label Grid.Row="7" Grid.Column="0" Text="Password" VerticalOptions="CenterAndExpand" />
+                        <Entry x:Name="PasswordEntry" Grid.Row="7" Grid.Column="1"  Text="{Binding Password}" IsPassword="True" Placeholder="Your password" TextChanged="Entry_TextChanged" />
+                        <Label x:Name="PasswordLabel" Grid.Row="7" Grid.Column="2" Text="*" TextColor="Red" />
+
+                        <Label Grid.Row="8" Grid.Column="0" Text="Confirm Password" VerticalOptions="CenterAndExpand" />
+                        <Entry x:Name="ConfirmPasswordEntry" Grid.Row="8" Grid.Column="1" Text="{Binding ConfirmPassword}" IsPassword="True" Placeholder="Confirm your password" TextChanged="Entry_TextChanged" />
+                        <Label x:Name="ConfirmPasswordLabel" Grid.Row="8" Grid.Column="2" Text="*" TextColor="Red" />
+
+                        <Grid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="RegisterButton" Text="Register" IsEnabled="False" Clicked="RegisterButton_Clicked" />
+                            <Button x:Name="LoginButton" Text="Login" Grid.Column="1" Clicked="LoginButton_Clicked" />
+                        </Grid>
+                        <Label x:Name="StateLabel" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+                    </Grid>
+                </StackLayout>
+            </ScrollView>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,55 @@
+﻿@page "/confirm-email/{UserId}/{Code}"
+
+<h3>Email confirmation</h3>
+
+@if (Submitting)
+{
+    <span>Please wait...</span>
+}
+
+
+@if (_error == true)
+{
+    <div class="alert alert-warning alert-dismissible">
+        <button type="button" @onclick="() => { _error = null; }" class="close">&times;</button>
+        @_response
+    </div>
+}
+@if (_error == false)
+{
+    <div class="alert alert-success alert-dismissible">
+        <button class="close" @onclick="() => { _error = null; }">&times;</button>
+        @_response
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string UserId { get; set; }
+
+    [Parameter]
+    public string Code { get; set; }
+    private bool Submitting { get; set; }
+
+    private bool? _error;
+    private string _response;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Submitting = true;
+            _error = null;
+            var confirmEmailModel = new MentalHealth.Shared.Models.UserAccount.ConfirmEmail { Id = UserId, Code = Code };
+
+            var result = await _httpClient.PostAsJsonAsync($"api/ApplicationUsers/confirm-email", confirmEmailModel);
+            _response = await result.Content.ReadAsStringAsync();
+            _error = !result.IsSuccessStatusCode;
+            Submitting = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Home"
+             xmlns:ext="clr-namespace:MentalHealth.Mobile.Extensions"
+             x:Class="MentalHealth.Mobile.Pages.HomePage">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,20,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout x:Name="ParentPanel">
+                <Label Text="Welcome to MentalHealth" FontSize="Large"
+                HorizontalOptions="CenterAndExpand" />
+                <!--<Image Source="{ext:ImageResource Source=MentalHealth.Mobile.images.pink_img.jpg }"
+                       VerticalOptions="FillAndExpand"
+                   Aspect="AspectFit"/>-->
+                <Frame BorderColor="Gray" VerticalOptions="FillAndExpand">
+                <StackLayout>
+                        <Label
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="MentalHealth aims at delivering a mental heath platform in a simplified and convenient way to the end users."/>
+                                    <Span Text=" Read more ..." TextColor="DodgerBlue">
+                                        <Span.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="ReadMoreButton_Clicked"/>
+                                        </Span.GestureRecognizers>
+                                    </Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                    <Label Text="Express your your mental problems without any physical meeting at any time, at an affordabe price."
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalTextAlignment="Center"/>
+                </StackLayout>
+                </Frame>
+
+                <Frame BorderColor="Gray" VerticalOptions="FillAndExpand">
+                    <StackLayout>
+                        <Label Text="My Anxiety" FontSize="Title"/>
+                        <Label Text="What are you experiencing?"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Button Text="Signs of anxiety" Clicked="SignsButton_Clicked"/>
+                            <Button Text="Quick tips" Clicked="TipsButton_Clicked"/>
+                            <Button Text="Quick relief" Clicked="ReliefButton_Clicked"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <Frame BorderColor="Gray" VerticalOptions="FillAndExpand">
+                    <StackLayout>
+                        <Label Text="General worry" FontSize="Medium"/>
+
+                        <Label Text="Intro" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Most of people worry once in a while, this constant build up negative heads and assuming the worst is going to happen. Worry become a problem when it's to shut off and leaves people telling anxious, overwhelmed or exhausted and it get in the way of life. Check out the following to see what your worry is" />
+
+                        <Label Text="School/ work" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concerning about doing well in tests, work, performance, getting things done, making mistakes, participating in class or meeting and failing or getting fired." />
+
+                        <Label Text="Relationship/ family" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern about making and keeping friends getting along with others and dating and the wellbeing of friends and family." />
+
+                        <Label Text="Health/ safety" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern of being sick or getting a serious illness or disease or getting hurt or being harmed." />
+
+                        <Label Text="Finance and money" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern about the ability to pay bill, to stay out of debt to afford things or having enough money set aside for the future." />
+
+                        <Label Text="Environment/ world" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern about natural disaster global warming, world affair war and other world event" />
+
+                        <Label Text="Minor things" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern about minor things like being late losing or forgetting things and making the wrong decision about minor things." />
+
+                        <Button Text="Contact a therapist &gt;&gt;" Clicked="TherapistsButton_Clicked"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
