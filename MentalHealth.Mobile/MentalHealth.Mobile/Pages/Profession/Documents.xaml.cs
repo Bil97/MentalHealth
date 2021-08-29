@@ -66,7 +66,7 @@ namespace MentalHealth.Mobile.Pages.Profession
                 var result = await App.HttpClient.PostAsync($"api/professions/approve", content);
 
                 if (result.IsSuccessStatusCode)
-                    await MainPage.Tab.Navigation.PopAsync();
+                    await MainPage.NavPage.Navigation.PopAsync();
                 else
                     StateLabel.Text = await result.Content.ReadAsStringAsync();
             }
@@ -88,7 +88,7 @@ namespace MentalHealth.Mobile.Pages.Profession
                  };
                 var result = await App.HttpClient.PostAsync($"api/professions/reject", content);
                 if (result.IsSuccessStatusCode)
-                    await MainPage.Tab.Navigation.PopAsync();
+                    await MainPage.NavPage.Navigation.PopAsync();
                 StateLabel.Text = await result.Content.ReadAsStringAsync();
             }
             catch (Exception ex)

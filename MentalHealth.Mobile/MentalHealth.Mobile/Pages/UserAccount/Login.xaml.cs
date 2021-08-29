@@ -1,8 +1,13 @@
-﻿using System;
+﻿using MentalHealth.Mobile.Pages.Communicate;
+using MentalHealth.Mobile.Pages.Profession;
+using System;
+using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,7 +23,7 @@ namespace MentalHealth.Mobile.Pages.UserAccount
 
         protected override bool OnBackButtonPressed()
         {
-            MainPage.Tab.Navigation.PopToRootAsync();
+            MainPage.NavPage.Navigation.PopToRootAsync();
             return base.OnBackButtonPressed();
         }
 
@@ -55,17 +60,43 @@ namespace MentalHealth.Mobile.Pages.UserAccount
                         new AuthenticationHeaderValue("bearer", loginResult);
                     App.IsAuthenticated = true;
 
-                    MainPage.Tab.Children.Insert(2, MainPage.Tab.InboxPage);
+                    var menuItems = MainPage.NavPage.FlyoutPage.ListView.ItemsSource as ObservableCollection<MainPageFlyoutMenuItem>;
+                    var profile = new MainPageFlyoutMenuItem
+                    {
+                        Title = "Profile",
+                        TargetType = typeof(Profile),
+                        IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.person.png",
+                        typeof(MainPageFlyout).GetTypeInfo().Assembly)
+                    };
+                    menuItems.Insert(2, profile);
+                    MainPage.NavPage.FlyoutPage.ListView.ItemsSource = menuItems;
+
+                    var inbox = new MainPageFlyoutMenuItem
+                    {
+                        Title = "Inbox",
+                        TargetType = typeof(Inbox),
+                        IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.inbox.png",
+                        typeof(MainPageFlyout).GetTypeInfo().Assembly)
+                    };
+                    menuItems.Insert(2, inbox);
 
                     var authToken = Application.Current.Properties["authToken"].ToString();
                     var user = App.User.AuthenticationState(authToken);
                     if (user.IsInRole("Admin"))
                     {
-                        MainPage.Tab.Children.Insert(2, MainPage.Tab.ApplicationsPage);
+                        var applications = new MainPageFlyoutMenuItem
+                        {
+                            Title = "Applications",
+                            TargetType = typeof(Applications),
+                            IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.folder.png",
+                            typeof(MainPageFlyout).GetTypeInfo().Assembly)
+                        };
+                        menuItems.Insert(2, applications);
                     }
+                    MainPage.NavPage.FlyoutPage.ListView.ItemsSource = menuItems;
                     await App.GetUser();
-                    MainPage.Tab.LoginToolBar.IsEnabled = false;
-                    await MainPage.Tab.Navigation.PopToRootAsync();
+                    MainPage.NavPage.LoginToolBar.IsEnabled = false;
+                    await MainPage.NavPage.Navigation.PopToRootAsync();
                 }
             }
             catch (HttpRequestException ex)
@@ -106,12 +137,12 @@ namespace MentalHealth.Mobile.Pages.UserAccount
 
         private async void RegisterButton_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new Register());
+            await App.Current.MainPage.Navigation.PushModalAsync(new Register());
         }
 
         private async void ForgotPassword_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new ForgotPassword());
+            await App.Current.MainPage.Navigation.PushModalAsync(new ForgotPassword());
         }
 
     }

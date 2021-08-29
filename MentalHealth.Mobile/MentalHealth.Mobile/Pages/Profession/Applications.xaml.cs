@@ -63,8 +63,8 @@ namespace MentalHealth.Mobile.Pages.Profession
 
         private async void DocumentsButton_Clicked(object sender, EventArgs e)
         {
-            var profession = ((Button) sender).CommandParameter as UserProfession;
-            await MainPage.Tab.Navigation.PushAsync(new Documents(userId: profession?.UserId, professionId: profession?.ProfessionId));
+            var profession = ((Button)sender).CommandParameter as UserProfession;
+            await App.Current.MainPage.Navigation.PushModalAsync(new Documents(userId: profession?.UserId, professionId: profession?.ProfessionId));
         }
     }
 }

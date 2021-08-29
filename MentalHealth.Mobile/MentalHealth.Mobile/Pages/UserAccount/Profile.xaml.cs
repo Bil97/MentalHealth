@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using MentalHealth.Mobile.Pages.Profession;
 using MentalHealth.Services;
 using Xamarin.Essentials;
@@ -70,33 +72,37 @@ namespace MentalHealth.Mobile.Pages.UserAccount
             }
         }
 
-        private void LogoutButton_Clicked(object sender, EventArgs e)
+        private async void LogoutButton_Clicked(object sender, EventArgs e)
         {
             var authToken = Application.Current.Properties["authToken"]?.ToString();
-            MainPage.Tab.Children.RemoveAt(2);
+            var menuItems = MainPage.NavPage.FlyoutPage.ListView.ItemsSource as ObservableCollection<MainPageFlyoutMenuItem>;
+
+            menuItems.RemoveAt(2);
             if (App.User.AuthenticationState(authToken).IsInRole("Admin"))
-                MainPage.Tab.Children.RemoveAt(2);
+                menuItems.RemoveAt(2);
+
+            MainPage.NavPage.FlyoutPage.ListView.ItemsSource = menuItems;
 
             Application.Current.Properties["authToken"] = null;
 
             App.HttpClient.DefaultRequestHeaders.Authorization = null;
             App.IsAuthenticated = false;
             App.UserDetails = new Models.UserAccount.UserDetails();
-            MainPage.Tab.LoginToolBar.IsEnabled = true;
+            MainPage.NavPage.LoginToolBar.IsEnabled = true;
 
             NotifyLabel.IsVisible = true;
             MainFrame.IsVisible = false;
-            MainPage.Tab.SelectedItem = MainPage.Tab.HomePage;
+            await App.Current.MainPage.Navigation.PushModalAsync(new HomePage());
         }
 
         private async void ChangePasswordButton_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new ChangePassword());
+            await App.Current.MainPage.Navigation.PushModalAsync(new ChangePassword());
         }
 
         private async void ApplyButton_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new Apply());
+            await App.Current.MainPage.Navigation.PushModalAsync(new Apply());
         }
 
         private void Entry_TextChanged(object sender, TextChangedEventArgs e)
@@ -182,7 +188,7 @@ namespace MentalHealth.Mobile.Pages.UserAccount
 
         private async void HealthRecordButton_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new HealthRecord());
+            await App.Current.MainPage.Navigation.PushModalAsync(new HealthRecord());
         }
     }
 }

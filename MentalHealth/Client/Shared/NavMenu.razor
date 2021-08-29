@@ -7,21 +7,70 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="therapists">
+                <span class="oi oi-people" aria-hidden="true"></span> Therapists
+            </NavLink>
+        </li>
+        <AuthorizeView Roles="Admin">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="applications">
+                    <span class="oi oi-folder" aria-hidden="true"></span> Applications
+                </NavLink>
+            </li>
+        </AuthorizeView>
+        <AuthorizeView>
+            <Authorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="inbox">
+                        <span class="oi oi-inbox" aria-hidden="true"></span> Inbox
+                    </NavLink>
+                </li>
+            </Authorized>
+        </AuthorizeView>
+        <li class="nav-item px-3">
+
+            <AuthorizeView>
+                <Authorized>
+                    <NavLink class="nav-link" href="user-profile">
+                        <span class="oi oi-person" aria-hidden="true"></span> @context.User.Identity.Name
+                    </NavLink>
+                </Authorized>
+                <NotAuthorized>
+                    <NavLink class="nav-link" href="user-profile/login">
+                        <span class="oi oi-account-login" aria-hidden="true"></span> Login
+                    </NavLink>
+                </NotAuthorized>
+            </AuthorizeView>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="learn">
+                <span class="oi oi-pencil" aria-hidden="true"></span> Learn
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            <NavLink class="nav-link" href="myanxiety">
+                <span class="oi oi-bug" aria-hidden="true"></span> My Anxiety
             </NavLink>
         </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="quicktips">
+                <span class="oi oi-excerpt" aria-hidden="true"></span> Quick Tips
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="about">
+                <span class="oi oi-info" aria-hidden="true"></span> About
+            </NavLink>
+        </li>
+
     </ul>
 </div>
 

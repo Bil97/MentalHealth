@@ -1,0 +1,72 @@
+﻿@page "/myanxiety/panic"
+
+<div class="card">
+    <div class="card-body">
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="pill" href="#intro">Intro</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#signs">Signs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#tips">Tips</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="intro" class="container tab-pane active">
+                <h3 class="text-secondary">Panic</h3>
+                <p>
+                    Panic attacks are sudden and intense rushes of fear marked by strong sensations
+                    (e.g. pounding heart, difficulty breathing, dizziness).
+                    Panic attacks are the body’s “alarm system" going off –
+                    even when there isn’t any real danger (like a false alarm).
+                    Panic attacks are actually pretty common. They can become a problem if you misinterpret
+                    the physical symptoms as being dangerous, rather than just being uncomfortable.
+                    They can also become a problem if you start avoiding situations or
+                    places where you’ve had a panic attack or might have one (e.g. being home alone, being in crowded places).
+                    <br />
+                    <b>Check out the following to see what people who struggle with panic tend to think and do:</b>
+                </p>
+                <h4 class="text-primary">Fearing Consequences</h4>
+                <p>
+                    Assuming something horrible is going to happen when having a panic attack.
+                </p>
+                <h4 class="text-primary">Avoiding Situations</h4>
+                <p>
+                    Avoiding situations where help might not be available, or escape would be challenging if you had a panic.
+                </p>
+                <h4 class="text-primary">Avoiding Activities</h4>
+                <p>
+                    Not engaging in specific activities or doing certain things
+                    that might bring on sensations of a panic attack, such as exercising.
+                </p>
+                <h4 class="text-primary">Carrying Safety Items</h4>
+                <p>
+                    Carrying certain items with you to feel safer
+                    and to try to prevent the onset of a panic attack, such as water or your cell phone.
+                </p>
+                <h4 class="text-primary">Using Safety Behaviors</h4>
+                <p>
+                    Taking specific actions or precautions to feel safer
+                    and prevent a panic attack such as always having someone with you.
+                </p>
+
+                <a href="therapists" class="btn btn-primary">Contact a therapist &gt;&gt;</a>
+            </div>
+
+            <div id="signs" class="container tab-pane fade">
+                <Signs />
+            </div>
+
+            <div id="tips" class="container tab-pane fade">
+                <Tips />
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

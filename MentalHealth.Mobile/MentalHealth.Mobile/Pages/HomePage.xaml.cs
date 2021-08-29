@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,29 +13,29 @@ namespace MentalHealth.Mobile.Pages
             InitializeComponent();
         }
 
-        private async void ReadMoreButton_Clicked(object sender, EventArgs e)
+        private async void AboutButton_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new About());
+            await App.Current.MainPage.Navigation.PushModalAsync(new About());
         }
 
-        private void TherapistsButton_Clicked(object sender, EventArgs e)
+        private async void TherapistsButton_Clicked(object sender, EventArgs e)
         {
-            MainPage.Tab.SelectedItem = MainPage.Tab.TherapistsPage;
+            await App.Current.MainPage.Navigation.PushModalAsync(new Therapists());
         }
 
-        private async void SignsButton_Clicked(object sender, EventArgs e)
+        private async void LearnButton_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new SignsOfAnxiety());
+            await App.Current.MainPage.Navigation.PushModalAsync(new Learn());
         }
 
-        private async void TipsButton_Clicked(object sender, EventArgs e)
+        private async void MyAnxietyButton_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new QuickTips());
+            await App.Current.MainPage.Navigation.PushModalAsync(new MyAnxiety());
         }
 
-        private async void ReliefButton_Clicked(object sender, EventArgs e)
+        private async void QuickTipsButton_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new QuickRelief());
+            await App.Current.MainPage.Navigation.PushModalAsync(new QuickTips());
         }
     }
 }

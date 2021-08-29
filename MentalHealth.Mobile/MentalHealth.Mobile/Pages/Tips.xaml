@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MentalHealth.Mobile.Pages.Tips">
+  <ContentView.Content>
+      <StackLayout>
+            <Label TextType="Html">
+                <![CDATA[
+                <div>Here are <b>10 key strategies</b> for managing problematic worry:</div>
+<ol>
+    <li>Check in with yourself</li>
+    <li>Recognize and avoid common thinking traps</li>
+    <li>Learn to develop more balanced thoughts</li>
+    <li>Identify key copying statements to help ride out worries</li>
+    <li>Test out your beliefs about uncertainity</li>
+    <li>Dial down the physical symptoms of anxiety</li>
+    <li>Learn to face uncertainity head on</li>
+    <li>Stop avoiding uncertainity and get out of your comfort zone</li>
+    <li>Take care of yourself</li>
+    <li>Get help when needed</li>
+</ol>
+                ]]>
+            </Label>
+      </StackLayout>
+  </ContentView.Content>
+</ContentView>

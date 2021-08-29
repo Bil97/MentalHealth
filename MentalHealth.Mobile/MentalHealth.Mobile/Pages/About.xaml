@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="About"
              x:Class="MentalHealth.Mobile.Pages.About">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="5">
                 <Label Text="About MentalHealth" FontSize="Large"
                        HorizontalOptions="CenterAndExpand" />
-                <Label x:Name="Paragraph1Label"
-                   HorizontalOptions="CenterAndExpand"/>
+                <Label x:Name="Paragraph1Label"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

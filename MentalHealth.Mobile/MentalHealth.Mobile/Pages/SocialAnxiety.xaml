@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:MentalHealth.Mobile.Pages"
+             Title="Social Anxiety"
+             x:Class="MentalHealth.Mobile.Pages.SocialAnxiety">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name="IntroButton" Text="Intro" BackgroundColor="DodgerBlue" Clicked="IntroButton_Clicked"/>
+                    <Button x:Name="SignsButton" Text="Signs" BackgroundColor="LightGray" Clicked="SignsButton_Clicked"/>
+                    <Button x:Name="TipsButton" Text="Tips" BackgroundColor="LightGray" Clicked="TipsButton_Clicked"/>
+                </StackLayout>
+
+                <Frame x:Name="IntroPanel" BorderColor="Gray" VerticalOptions="FillAndExpand">
+                    <StackLayout>
+                        <Label Text="Social Anxiety" FontSize="Medium"/>
+
+                        <Label TextType="Html">
+                            <![CDATA[
+<p>Most people get anxious in some social situations, like before a job interview or when giving a speech.
+    However, some people get overly anxious in social situations.
+    They tend to worry about doing something embarrassing or that others will think badly of them.
+    They also tend to avoid social situations or endure them with great distress.
+    Social anxiety becomes problematic when it interfaces with daily life.
+    If you tend to feel overly anxious in social situations, social anxiety may be an issue for you.
+    <br />
+    <b>Check out the following social situations or experiences to see which ones are a problem for you:</b>
+</p>                            
+                            ]]>
+                        </Label>
+
+                        <Label Text="Social Events" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Worrying about doing something embarrassing or making a good impression when attending social events, or trying to avoid social gatherings altogether." />
+
+                        <Label Text="Being Assertive" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Struggling with assertiveness in social situations. Being fearful of conflict and having a hard time asserting your needs." />
+
+                        <Label Text="Building Relationships" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Struggling to meet new people and build friendships. Having frequent worries about others not liking or approving you." />
+
+                        <Label Text="Public Speaking" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Worrying about looking anxious or making mistakes and messing up when speaking in public." />
+
+                        <Label Text="Performance Situations" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Experiencing anxiety when performing in front of others or being observed by others." />
+
+                        <Label Text="School/Work" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Getting anxious when interacting with others at school or work. Having a hard time participating in school or work related activities involving others." />
+
+                        <Button Text="Contact a therapist &gt;&gt;" Clicked="TherapistsButton_Clicked"/>
+                    </StackLayout>
+                </Frame>
+
+                <Frame x:Name="SignsPanel" BorderColor="Gray">
+                    <local:Signs />
+                </Frame>
+
+                <Frame x:Name="TipsPanel" BorderColor="Gray">
+                    <local:Tips />
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

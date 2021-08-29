@@ -43,7 +43,7 @@ namespace MentalHealth.Mobile.Pages.Communicate
         protected override bool OnBackButtonPressed()
         {
             ChatBackNavigate = true;
-            MainPage.Tab.Navigation.PopAsync();
+            MainPage.NavPage.Navigation.PopAsync();
             return base.OnBackButtonPressed();
         }
         private async void Chat_Appearing(object sender, EventArgs e)
@@ -54,7 +54,7 @@ namespace MentalHealth.Mobile.Pages.Communicate
             {
                 if (!Profession.ServiceFeePaid)
                 {
-                    await MainPage.Tab.Navigation.PushAsync(new Transaction(Profession.Id, UserId));
+                    await App.Current.MainPage.Navigation.PushModalAsync(new Transaction(Profession.Id, UserId));
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace MentalHealth.Mobile.Pages.Communicate
                         NotifyLabel.IsVisible = false;
                         MainFrame.IsVisible = true;
 
-                        var authToken = App.Current.Properties["authToken"].ToString();
+                        var authToken = Application.Current.Properties["authToken"].ToString();
                         var user = App.User.AuthenticationState(authToken);
                         if (!toolbarAdded)
                             if (user.IsInRole("HealthOfficer"))
@@ -188,7 +188,7 @@ namespace MentalHealth.Mobile.Pages.Communicate
         private void AddToolbar()
         {
             var addHealthRecord = new ToolbarItem { Text = "Add health reacord" };
-            addHealthRecord.Clicked += async (sender, e) => { await MainPage.Tab.Navigation.PushAsync(new AddHealthRecord(SessionId)); };
+            addHealthRecord.Clicked += async (sender, e) => { await App.Current.MainPage.Navigation.PushModalAsync(new AddHealthRecord(SessionId)); };
 
             var closeSession = new ToolbarItem { Text = "Close this session" };
             closeSession.Clicked += async (sender, e) =>
@@ -198,9 +198,8 @@ namespace MentalHealth.Mobile.Pages.Communicate
                     StateLabel.Text = "Please wait...";
                     await App.HttpClient.GetStringAsync($"api/HealthRecords/close-session/{SessionId}");
                     StateLabel.Text = string.Empty;
-                    //MainPage.Tab.Navigation.PushAsync(new AddHealthRecord(SessionId));
                     ChatBackNavigate = true;
-                    await MainPage.Tab.Navigation.PopAsync();
+                    await MainPage.NavPage.Navigation.PopAsync();
                 }
                 catch (Exception ex) { StateLabel.Text = string.Empty; await DisplayAlert("Send error", ex.Message, "OK"); }
             };

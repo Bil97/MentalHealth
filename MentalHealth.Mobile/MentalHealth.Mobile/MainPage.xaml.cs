@@ -1,72 +1,130 @@
-﻿using MentalHealth.Mobile.Custom;
-using MentalHealth.Mobile.Pages;
+﻿using MentalHealth.Mobile.Pages;
 using MentalHealth.Mobile.Pages.Communicate;
 using MentalHealth.Mobile.Pages.Profession;
 using MentalHealth.Mobile.Pages.UserAccount;
+using System;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace MentalHealth.Mobile
 {
-    public partial class MainPage : CustomTabbedPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class MainPage : FlyoutPage
     {
-        public Applications ApplicationsPage;
-        public Inbox InboxPage;
         bool isLoaded = false;
+        public static MainPage NavPage { get; private set; }
+
         public MainPage()
         {
             InitializeComponent();
-            Tab = this;
+            NavPage = this;
+
             this.Appearing += MainPage_Appearing;
+            FlyoutPage.ListView.ItemSelected += ListView_ItemSelected;
+
             if (Device.RuntimePlatform == Device.UWP)
                 LoginToolBar.IconImageSource = ImageSource.FromResource("MentalHealth.Mobile.images.account_login.png", typeof(MainPage).GetTypeInfo().Assembly);
-
-            ApplicationsPage = new Applications();
-            InboxPage = new Inbox();
         }
-        private void MainPage_Appearing(object sender, System.EventArgs e)
+
+        private void MainPage_Appearing(object sender, EventArgs e)
         {
             if (isLoaded) return;
 
             LoginToolBar.IsEnabled = true;
+            var menuItems = FlyoutPage.ListView.ItemsSource as ObservableCollection<MainPageFlyoutMenuItem>;
             if (App.IsAuthenticated)
             {
-                this.Children.Insert(2, InboxPage);
+                var profile = new MainPageFlyoutMenuItem
+            {
+                Title = "Profile",
+                TargetType = typeof(Profile),
+                IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.person.png",
+              typeof(MainPageFlyout).GetTypeInfo().Assembly)
+            };
+            menuItems.Insert(2, profile);
 
-                var authToken = Application.Current.Properties["authToken"].ToString();
-                var user = App.User.AuthenticationState(authToken);
-                if (user.IsInRole("Admin"))
+            var inbox = new MainPageFlyoutMenuItem
+            {
+                Title = "Inbox",
+                TargetType = typeof(Inbox),
+                IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.inbox.png",
+                 typeof(MainPageFlyout).GetTypeInfo().Assembly)
+            };
+            menuItems.Insert(2, inbox);
+
+            var authToken = Application.Current.Properties["authToken"]?.ToString();
+            var user = App.User.AuthenticationState(authToken);
+            if (user.IsInRole("Admin"))
+            {
+                var applications = new MainPageFlyoutMenuItem
                 {
-                    this.Children.Insert(2, ApplicationsPage);
-                }
-                LoginToolBar.IsEnabled = false;
+                    Title = "Applications",
+                    TargetType = typeof(Applications),
+                    IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.folder.png",
+                    typeof(MainPageFlyout).GetTypeInfo().Assembly)
+                };
+                menuItems.Insert(2, applications);
             }
+            LoginToolBar.IsEnabled = false;
+            }
+            else
+            {
+                var login = new MainPageFlyoutMenuItem
+            {
+                Title = "Login",
+                TargetType = typeof(Login),
+                IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.account_login.png",
+                typeof(MainPageFlyout).GetTypeInfo().Assembly)
+            };
+            menuItems.Insert(2, login);
+            }
+            FlyoutPage.ListView.ItemsSource = menuItems;
             isLoaded = true;
         }
 
-        public static MainPage Tab { get; private set; }
+        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            var item = e.SelectedItem as MainPageFlyoutMenuItem;
+            if (item == null)
+                return;
 
-        private async void LoginToolBar_Clicked(object sender, System.EventArgs e)
+            var page = (Page)Activator.CreateInstance(item.TargetType);
+            page.Title = item.Title;
+
+            Detail = new NavigationPage(page);
+            IsPresented = false;
+
+            FlyoutPage.ListView.SelectedItem = null;
+        }
+
+        private void LoginToolBar_Clicked(object sender, EventArgs e)
         {
             if (!App.IsAuthenticated)
             {
-                await this.Navigation.PushAsync(new Login());
+                NavPage.Detail = new NavigationPage(new Login());
             }
         }
 
-        private async void SignsToolBar_Clicked(object sender, System.EventArgs e)
+        private void AboutToolBar_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new SignsOfAnxiety());
+            NavPage.Detail = new NavigationPage(new About());
         }
 
-        private async void TipsToolBar_Clicked(object sender, System.EventArgs e)
+        private void LearnToolBar_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new QuickTips());
+            NavPage.Detail = new NavigationPage(new Learn());
         }
 
-        private async void ReliefToolBar_Clicked(object sender, System.EventArgs e)
+        private void MyAnxietyToolBar_Clicked(object sender, EventArgs e)
         {
-            await MainPage.Tab.Navigation.PushAsync(new QuickRelief());
+            NavPage.Detail = new NavigationPage(new MyAnxiety());
+        }
+
+        private void QuickTipsToolBar_Clicked(object sender, EventArgs e)
+        {
+            NavPage.Detail = new NavigationPage(new QuickTips());
         }
     }
 }

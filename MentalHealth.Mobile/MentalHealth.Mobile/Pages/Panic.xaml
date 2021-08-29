@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MentalHealth.Mobile.Pages"
+             Title="Panic"
+             x:Class="MentalHealth.Mobile.Pages.Panic">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name="IntroButton" Text="Intro" BackgroundColor="DodgerBlue" Clicked="IntroButton_Clicked"/>
+                    <Button x:Name="SignsButton" Text="Signs" BackgroundColor="LightGray" Clicked="SignsButton_Clicked"/>
+                    <Button x:Name="TipsButton" Text="Tips" BackgroundColor="LightGray" Clicked="TipsButton_Clicked"/>
+                </StackLayout>
+
+                <Frame x:Name="IntroPanel" BorderColor="Gray" VerticalOptions="FillAndExpand">
+                    <StackLayout>
+                        <Label Text="Panic" FontSize="Medium"/>
+
+                        <Label TextType="Html">
+                            <![CDATA[
+<p>Panic attacks are sudden and intense rushes of fear marked by strong sensations
+    (e.g. pounding heart, difficulty breathing, dizziness).
+    Panic attacks are the body’s “alarm system" going off –
+    even when there isn’t any real danger (like a false alarm).
+    Panic attacks are actually pretty common. They can become a problem if you misinterpret
+    the physical symptoms as being dangerous, rather than just being uncomfortable.
+    They can also become a problem if you start avoiding situations or
+    places where you’ve had a panic attack or might have one (e.g. being home alone, being in crowded places).
+    <br />
+    <b>Check out the following to see what people who struggle with panic tend to think and do:</b>
+</p>                            
+                            ]]>
+                        </Label>
+
+                        <Label Text="SFearing Consequences" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Assuming something horrible is going to happen when having a panic attack." />
+
+                        <Label Text="Avoiding Situations" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Avoiding situations where help might not be available, or escape would be challenging if you had a panic." />
+
+                        <Label Text="Avoiding Activities" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Not engaging in specific activities or doing certain things that might bring on sensations of a panic attack, such as exercising." />
+
+                        <Label Text="Carrying Safety Items" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Carrying certain items with you to feel safer and to try to prevent the onset of a panic attack, such as water or your cell phone." />
+
+                        <Label Text="Using Safety Behaviors" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Taking specific actions or precautions to feel safer and prevent a panic attack such as always having someone with you." />
+
+                        <Button Text="Contact a therapist &gt;&gt;" Clicked="TherapistsButton_Clicked"/>
+                    </StackLayout>
+                </Frame>
+
+                <Frame x:Name="SignsPanel" BorderColor="Gray">
+                    <local:Signs />
+                </Frame>
+
+                <Frame x:Name="TipsPanel" BorderColor="Gray">
+                    <local:Tips />
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

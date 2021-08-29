@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MentalHealth.Mobile.Pages"
+             Title="General Worry"
+             x:Class="MentalHealth.Mobile.Pages.GeneralWorry">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name="IntroButton" Text="Intro" BackgroundColor="DodgerBlue" Clicked="IntroButton_Clicked"/>
+                    <Button x:Name="SignsButton" Text="Signs" BackgroundColor="LightGray" Clicked="SignsButton_Clicked"/>
+                    <Button x:Name="TipsButton" Text="Tips" BackgroundColor="LightGray" Clicked="TipsButton_Clicked"/>
+                </StackLayout>
+
+                <Frame x:Name="IntroPanel" BorderColor="Gray" VerticalOptions="FillAndExpand">
+                    <StackLayout>
+                        <Label Text="General worry" FontSize="Medium"/>
+
+                        <Label TextType="Html">
+                            <![CDATA[
+<p>Most of people worry once in a while, this constant build up
+    negative heads and assuming the worst is going to happen. Worry
+    become a problem when it's to shut off and leaves people telling
+    anxious, overwhelmed or exhausted and it get in the way of life.
+    <br />
+    <b>Check out the following to see what your worry is:</b>
+</p>                            
+                            ]]>
+                        </Label>
+
+                        <Label Text="School/ work" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concerning about doing well in tests, work, performance, getting things done, making mistakes, participating in class or meeting and failing or getting fired." />
+
+                        <Label Text="Relationship/ family" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern about making and keeping friends getting along with others and dating and the wellbeing of friends and family." />
+
+                        <Label Text="Health/ safety" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern of being sick or getting a serious illness or disease or getting hurt or being harmed." />
+
+                        <Label Text="Finance and money" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern about the ability to pay bill, to stay out of debt to afford things or having enough money set aside for the future." />
+
+                        <Label Text="Environment/ world" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern about natural disaster global warming, world affair war and other world event" />
+
+                        <Label Text="Minor things" FontSize="Subtitle" TextColor="DodgerBlue"/>
+                        <Label Text="Concern about minor things like being late losing or forgetting things and making the wrong decision about minor things." />
+
+                        <Button Text="Contact a therapist &gt;&gt;" Clicked="TherapistsButton_Clicked"/>
+                    </StackLayout>
+                </Frame>
+
+                <Frame x:Name="SignsPanel" BorderColor="Gray">
+                    <local:Signs />
+                </Frame>
+
+                <Frame x:Name="TipsPanel" BorderColor="Gray">
+                    <local:Tips />
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

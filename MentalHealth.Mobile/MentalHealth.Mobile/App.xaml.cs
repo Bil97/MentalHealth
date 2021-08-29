@@ -14,9 +14,7 @@ namespace MentalHealth.Mobile
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new MainPage());
-            //MainPage = new MainPage();
-            App.Current.UserAppTheme = OSAppTheme.Light;
+            MainPage = new MainPage();
         }
 
         public static HttpClient HttpClient { get; set; }
@@ -36,10 +34,10 @@ namespace MentalHealth.Mobile
                 BaseAddress = new Uri(BaseApi.Url)
             };
 
-            if (!Application.Current.Properties.ContainsKey("authToken"))
-                Application.Current.Properties.Add("authToken", null);
+            if (!Current.Properties.ContainsKey("authToken"))
+                Current.Properties.Add("authToken", null);
 
-            var authToken = Application.Current.Properties["authToken"];
+            var authToken = Current.Properties["authToken"];
             if (authToken != null)
             {
                 IsAuthenticated = true;
@@ -61,7 +59,7 @@ namespace MentalHealth.Mobile
         {
             try
             {
-                var authToken = Application.Current.Properties["authToken"];
+                var authToken = Current.Properties["authToken"];
                 if (authToken != null)
                 {
                     var authState = User.AuthenticationState(authToken.ToString());
@@ -86,7 +84,7 @@ namespace MentalHealth.Mobile
             }
             catch (HttpRequestException ex)
             {
-                await App.Current.MainPage.DisplayAlert("Error message", ex.Message, "OK");
+                await Current.MainPage.DisplayAlert("Error message", ex.Message, "OK");
             }
         }
 

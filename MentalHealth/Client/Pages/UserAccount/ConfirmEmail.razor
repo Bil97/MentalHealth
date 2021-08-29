@@ -1,28 +1,31 @@
 ﻿@page "/confirm-email/{UserId}/{Code}"
+<div class="card">
+    <div class="card-body">
 
-<h3>Email confirmation</h3>
+        <h3>Email confirmation</h3>
 
-@if (Submitting)
-{
-    <span>Please wait...</span>
-}
+        @if (Submitting)
+        {
+            <span>Please wait...</span>
+        }
 
 
-@if (_error == true)
-{
-    <div class="alert alert-warning alert-dismissible">
-        <button type="button" @onclick="() => { _error = null; }" class="close">&times;</button>
-        @_response
+        @if (_error == true)
+        {
+            <div class="alert alert-warning alert-dismissible">
+                <button type="button" @onclick="() => { _error = null; }" class="close">&times;</button>
+                @_response
+            </div>
+        }
+        @if (_error == false)
+        {
+            <div class="alert alert-success alert-dismissible">
+                <button class="close" @onclick="() => { _error = null; }">&times;</button>
+                @_response
+            </div>
+        }
     </div>
-}
-@if (_error == false)
-{
-    <div class="alert alert-success alert-dismissible">
-        <button class="close" @onclick="() => { _error = null; }">&times;</button>
-        @_response
-    </div>
-}
-
+</div>
 @code {
     [Parameter]
     public string UserId { get; set; }

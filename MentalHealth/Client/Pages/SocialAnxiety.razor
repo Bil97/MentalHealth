@@ -1,0 +1,76 @@
+﻿@page "/myanxiety/socialanxiety"
+
+    <div class="card">
+        <div class="card-body">
+
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#intro">Intro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#signs">Signs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#tips">Tips</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="intro" class="container tab-pane active">
+                    <h3 class="text-secondary">Social Anxiety</h3>
+                    <p>
+                        Most people get anxious in some social situations, like before a job interview or when giving a speech.
+                        However, some people get overly anxious in social situations.
+                        They tend to worry about doing something embarrassing or that others will think badly of them.
+                        They also tend to avoid social situations or endure them with great distress.
+                        Social anxiety becomes problematic when it interfaces with daily life.
+                        If you tend to feel overly anxious in social situations, social anxiety may be an issue for you.
+                        <br />
+                        <b>Check out the following social situations or experiences to see which ones are a problem for you:</b>
+                    </p>
+                    <h4 class="text-primary">Social Events</h4>
+                    <p>
+                        Worrying about doing something embarrassing or making a good impression when attending social events,
+                        or trying to avoid social gatherings altogether.
+                    </p>
+                    <h4 class="text-primary">Being Assertive</h4>
+                    <p>
+                        Struggling with assertiveness in social situations. 
+                        Being fearful of conflict and having a hard time asserting your needs.
+                    </p>
+                    <h4 class="text-primary">Building Relationships</h4>
+                    <p>
+                        Struggling to meet new people and build friendships. 
+                        Having frequent worries about others not liking or approving you.
+                    </p>
+                    <h4 class="text-primary">Public Speaking</h4>
+                    <p>
+                        Worrying about looking anxious or making mistakes and messing up when speaking in public.
+                    </p>
+                    <h4 class="text-primary">Performance Situations</h4>
+                    <p>
+                        Experiencing anxiety when performing in front of others or being observed by others.
+                    </p>
+                    <h4 class="text-primary">School/Work</h4>
+                    <p>
+                        Getting anxious when interacting with others at school or work. 
+                        Having a hard time participating in school or work related activities involving others.
+                    </p>
+
+                    <a href="therapists" class="btn btn-primary">Contact a therapist &gt;&gt;</a>
+                </div>
+
+                <div id="signs" class="container tab-pane fade">
+                    <Signs />
+                </div>
+
+                <div id="tips" class="container tab-pane fade">
+                    <Tips />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @code {
+
+    }

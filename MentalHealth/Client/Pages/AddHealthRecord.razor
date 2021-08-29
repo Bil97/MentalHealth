@@ -1,70 +1,74 @@
 ﻿@page "/health/add/{SessionId}"
+    <div class="card">
+        <div class="card-body">
 
-<h3>Patient Health Record</h3>
-<div class="card">
-    <div class="card-body">
-        <div class="form-group">
-            <textarea @bind="report" class="form-control" />
+            <h3>Patient Health Record</h3>
         </div>
-        <button @onclick="Send" class="btn btn-primary" disabled="@Submitting">
-            @if (Submitting)
-            {
-                <span class="spinner-border spinner-border-sm"></span>
-                <span>Please wait...</span>
-            }
-            else
-            {
-                <span>Send</span>
-            }
-        </button>
-
-        @if (Error == true)
-        {
-            <div class="alert alert-warning alert-dismissible">
-                <button type="button" @onclick="() => { Error = null; }" class="close">&times;</button>
-                @Response
-            </div>
-        }
-        @if (Error == false)
-        {
-            <div class="alert alert-success alert-dismissible">
-                <button class="close" @onclick="() => { Error = null; }">&times;</button>
-                @Response
-            </div>
-        }
-
     </div>
-</div>
-<br />
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group">
+                <textarea @bind="report" class="form-control" />
+            </div>
+            <button @onclick="Send" class="btn btn-primary" disabled="@Submitting">
+                @if (Submitting)
+                {
+                    <span class="spinner-border spinner-border-sm"></span>
+                    <span>Please wait...</span>
+                }
+                else
+                {
+                    <span>Send</span>
+                }
+            </button>
 
-@code {
-    [Parameter]
-    public string SessionId { get; set; }
-    private string Response { get; set; }
-    private bool? Error { get; set; } = null;
-    private bool Submitting { get; set; }
-    private string report;
-    async Task Send()
-    {
-        try
-        {
-            Submitting = true;
-            if (string.IsNullOrWhiteSpace(report)) return;
-
-            var patientReport = new PatientHealthRecord
+            @if (Error == true)
             {
-                SessionRecordId = SessionId,
-                HealthRecord = report
-            };
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" @onclick="() => { Error = null; }" class="close">&times;</button>
+                    @Response
+                </div>
+            }
+            @if (Error == false)
+            {
+                <div class="alert alert-success alert-dismissible">
+                    <button class="close" @onclick="() => { Error = null; }">&times;</button>
+                    @Response
+                </div>
+            }
 
-            var result = await _httpClient.PostAsJsonAsync<PatientHealthRecord>($"api/HealthRecords", patientReport);
-            Submitting = false;
-            report = string.Empty;
-            Response = await result.Content.ReadAsStringAsync();
-            Error = !result.IsSuccessStatusCode;
+        </div>
+    </div>
+    <br />
+
+    @code {
+        [Parameter]
+        public string SessionId { get; set; }
+        private string Response { get; set; }
+        private bool? Error { get; set; } = null;
+        private bool Submitting { get; set; }
+        private string report;
+        async Task Send()
+        {
+            try
+            {
+                Submitting = true;
+                if (string.IsNullOrWhiteSpace(report)) return;
+
+                var patientReport = new PatientHealthRecord
+                {
+                    SessionRecordId = SessionId,
+                    HealthRecord = report
+                };
+
+                var result = await _httpClient.PostAsJsonAsync<PatientHealthRecord>($"api/HealthRecords", patientReport);
+                Submitting = false;
+                report = string.Empty;
+                Response = await result.Content.ReadAsStringAsync();
+                Error = !result.IsSuccessStatusCode;
+            }
+            catch (AccessTokenNotAvailableException ex) { ex.Redirect(); }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
-        catch (AccessTokenNotAvailableException ex) { ex.Redirect(); }
-        catch (Exception ex) { Console.WriteLine(ex.Message); }
-    }
 
-}
+    }

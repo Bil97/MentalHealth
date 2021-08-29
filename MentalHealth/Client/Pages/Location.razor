@@ -1,11 +1,15 @@
 ﻿@page "/location/{Latitude}/{Longitude}"
 @inject IJSRuntime JS
-<h3>Location</h3>
+<div class="card">
+    <div class="card-body">
 
-<a class="direction-link" target="_blank" href="//maps.google.com/maps?f=d&amp;daddr=@Latitude,@Longitude&amp;hl=en"> Get Directions</a>
-<!--The div element for the map -->
-<div id="map" style="width:100%; height:400px;"></div>
+        <h3>Location</h3>
 
+        <a class="direction-link" target="_blank" href="//maps.google.com/maps?f=d&amp;daddr=@Latitude,@Longitude&amp;hl=en"> Get Directions</a>
+        <!--The div element for the map -->
+        <div id="map" style="width:100%; height:400px;"></div>
+    </div>
+</div>
 
 @code {
     [Parameter] public string Latitude { get; set; }

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="My Anxiety"
+             x:Class="MentalHealth.Mobile.Pages.MyAnxiety">
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame BorderColor="Gray">
+                <Label Text="My Anxiety" FontSize="Title" />
+            </Frame>
+
+            <Frame BorderColor="Gray">
+                <StackLayout>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="GeneralWorryTapGestureRecognizer_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+
+                    <Label Text="General Worry" FontSize="Subtitle"/>
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Most of people worry once in a while, this constant build up negative heads and assuming the worst is going to happen." />
+                                <Span Text=" Read more..." TextColor="DodgerBlue">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="GeneralWorryTapGestureRecognizer_Tapped"/>
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+            </Frame>
+
+            <Frame BorderColor="Gray">
+                <StackLayout>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="SocialAnxietyTapGestureRecognizer_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+
+                    <Label Text="Social Anxiety" FontSize="Subtitle"/>
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Most people get anxious in some social situations, like before a job interview or when giving a speech." />
+                                <Span Text=" Read more..." TextColor="DodgerBlue">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="SocialAnxietyTapGestureRecognizer_Tapped"/>
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+            </Frame>
+            
+            <Frame BorderColor="Gray">
+                <StackLayout>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="PerfectionismTapGestureRecognizer_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+
+                    <Label Text="Perfectionism" FontSize="Subtitle"/>
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Some people set excessively high standards that are impossible to meet or that can only be met at a great cost." />
+                                <Span Text=" Read more..." TextColor="DodgerBlue">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="PerfectionismTapGestureRecognizer_Tapped"/>
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+            </Frame>
+            
+            <Frame BorderColor="Gray">
+                <StackLayout>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="PanicTapGestureRecognizer_Tapped"/>
+                    </StackLayout.GestureRecognizers>
+
+                    <Label Text="Panic" FontSize="Subtitle"/>
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Panic attacks are sudden and intense rushes of fear marked by strong sensations (e.g. pounding heart, difficulty breathing, dizziness)." />
+                                <Span Text=" Read more..." TextColor="DodgerBlue">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="PanicTapGestureRecognizer_Tapped"/>
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

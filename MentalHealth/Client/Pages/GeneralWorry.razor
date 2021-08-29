@@ -1,0 +1,76 @@
+﻿@page "/myanxiety/generalworry"
+
+    <div class="card">
+        <div class="card-body">
+
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#intro">Intro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#signs">Signs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#tips">Tips</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="intro" class="container tab-pane active">
+                    <h3 class="text-secondary">General worry</h3>
+                    <p>
+                        Most of people worry once in a while, this constant build up
+                        negative heads and assuming the worst is going to happen. Worry
+                        become a problem when it's to shut off and leaves people telling
+                        anxious, overwhelmed or exhausted and it get in the way of life.
+                        <br />
+                        <b>Check out the following to see what your worry is:</b>
+                    </p>
+                    <h4 class="text-primary">School/Work</h4>
+                    <p>
+                        Concerning about doing well in tests, work, performance, getting
+                        things done, making mistakes, participating in class or meeting
+                        and failing or getting fired.
+                    </p>
+                    <h4 class="text-primary">Relationship/Family</h4>
+                    <p>
+                        Concern about making and keeping friends getting along with others
+                        and dating and the wellbeing of friends and family.
+                    </p>
+                    <h4 class="text-primary">Health/Safety</h4>
+                    <p>
+                        Concern of being sick or getting a serious illness or disease or
+                        getting hurt or being harmed.
+                    </p>
+                    <h4 class="text-primary">Finance and Money</h4>
+                    <p>
+                        Concern about the ability to pay bill, to stay out of debt to
+                        afford things or having enough money set aside for the future.
+                    </p>
+                    <h4 class="text-primary">Environment/World</h4>
+                    <p>
+                        Concern about natural disaster global warming, world affair war
+                        and other world event
+                    </p>
+                    <h4 class="text-primary">Minor Things</h4>
+                    <p>
+                        Concern about minor things like being late losing or forgetting
+                        things and making the wrong decision about minor things.
+                    </p>
+                    <a href="therapists" class="btn btn-primary">Contact a therapist &gt;&gt;</a>
+                </div>
+
+                <div id="signs" class="container tab-pane fade">
+                    <Signs />
+                </div>
+
+                <div id="tips" class="container tab-pane fade">
+                    <Tips />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @code {
+
+    }

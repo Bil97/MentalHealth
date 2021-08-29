@@ -48,7 +48,7 @@ namespace MentalHealth.Mobile.Pages
             var session = e.Item as SessionRecord;
             if (session != null)
             {
-                MainPage.Tab.Navigation.PushAsync(new SessionRecords(session.Id));
+                MainPage.NavPage.Navigation.PushModalAsync(new SessionRecords(session.Id));
             }
         }
     }

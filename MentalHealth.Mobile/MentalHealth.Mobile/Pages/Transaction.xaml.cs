@@ -34,13 +34,13 @@ namespace MentalHealth.Mobile.Pages
         {
             if (Chat.ChatBackNavigate)
             {
-                await MainPage.Tab.Navigation.PopAsync();
+                MainPage.NavPage.Navigation.PopAsync();
                 return;
             }
             var authToken = Application.Current.Properties["authToken"];
             if (authToken == null)
             {
-                await MainPage.Tab.Navigation.PushAsync(new UserAccount.Login());
+                await App.Current.MainPage.Navigation.PushModalAsync(new UserAccount.Login());
                 return;
             }
 
@@ -101,7 +101,7 @@ namespace MentalHealth.Mobile.Pages
         {
             try
             {
-                var authToken = App.Current.Properties["authToken"].ToString();
+                var authToken = Application.Current.Properties["authToken"].ToString();
                 var user = App.User.AuthenticationState(authToken);
 
                 if (user.Identity != null)
@@ -155,7 +155,7 @@ namespace MentalHealth.Mobile.Pages
                 else
                 {
                     var sessionId = await result.Content.ReadAsStringAsync();
-                    await MainPage.Tab.Navigation.PushAsync(new Chat(Profession.User.Id, sessionId));
+                    await App.Current.MainPage.Navigation.PushModalAsync(new Chat(Profession.User.Id, sessionId));
                 }
             }
             catch (Exception ex)
@@ -180,7 +180,7 @@ namespace MentalHealth.Mobile.Pages
                 if (result.IsSuccessStatusCode)
                 {
                     var sessionId = await result.Content.ReadAsStringAsync();
-                    await MainPage.Tab.Navigation.PushAsync(new Chat(Profession.User.Id, sessionId));
+                    await App.Current.MainPage.Navigation.PushModalAsync(new Chat(Profession.User.Id, sessionId));
                 }
                 else
                 {
