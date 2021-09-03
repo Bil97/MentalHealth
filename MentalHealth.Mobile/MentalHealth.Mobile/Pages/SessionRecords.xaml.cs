@@ -1,23 +1,30 @@
 ﻿using MentalHealth.Models;
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using System.Web;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MentalHealth.Mobile.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SessionRecords : ContentPage
+    public partial class SessionRecords : ContentPage, IQueryAttributable
     {
         private SessionRecord Session { get; set; }
         private string SessionId;
-        public SessionRecords(string sessionId)
+
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        {
+            SessionId = HttpUtility.UrlEncode(query["sessionId"]);
+        }
+
+        public SessionRecords()
         {
             InitializeComponent();
             this.Appearing += SessionRecords_Appearing;
-            SessionId = sessionId;
+
             var authToken = Application.Current.Properties["authToken"]?.ToString();
 
             if (App.User.AuthenticationState(authToken).IsInRole("HealthOfficer"))

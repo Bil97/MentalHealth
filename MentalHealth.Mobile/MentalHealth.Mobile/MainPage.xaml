@@ -1,26 +1,116 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<FlyoutPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MentalHealth.Mobile.MainPage"
-            Title="MentalHealth"
-             xmlns:local="clr-namespace:MentalHealth.Mobile"
-             xmlns:pages="clr-namespace:MentalHealth.Mobile.Pages">
-    <FlyoutPage.Flyout>
-        <local:MainPageFlyout x:Name="FlyoutPage" x:FieldModifier="public" />
-    </FlyoutPage.Flyout>
-    <FlyoutPage.ToolbarItems>
-        <ToolbarItem x:Name="LearnToolBar" x:FieldModifier="public" Text="Learn" Clicked="LearnToolBar_Clicked" />
-        <ToolbarItem x:Name="MyAnxietyToolBar" x:FieldModifier="public" Text="My Anxiety" Clicked="MyAnxietyToolBar_Clicked" />
-        <ToolbarItem x:Name="QuickTipsToolBar" x:FieldModifier="public" Text="Quick Tips" Clicked="QuickTipsToolBar_Clicked" />
-        <ToolbarItem x:Name="LoginToolBar" x:FieldModifier="public" Text="Login" Clicked="LoginToolBar_Clicked" />
-        <!--<ToolbarItem x:Name="AboutToolBar" x:FieldModifier="public" Text="About" Clicked="AboutToolBar_Clicked" />-->
-    </FlyoutPage.ToolbarItems>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="MentalHealth.Mobile.MainPage"
+       Title="MentalHealth"
+       xmlns:account="clr-namespace:MentalHealth.Mobile.Pages.UserAccount"
+       xmlns:communicate="clr-namespace:MentalHealth.Mobile.Pages.Communicate"
+       xmlns:profession="clr-namespace:MentalHealth.Mobile.Pages.Profession"
+       xmlns:ext="clr-namespace:MentalHealth.Mobile.Extensions"
+       xmlns:pages="clr-namespace:MentalHealth.Mobile.Pages">
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor" Value="White" />
+                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
 
-    <FlyoutPage.Detail>
-        <NavigationPage x:Name="MainNavPage" x:FieldModifier="public">
-            <x:Arguments>
-                <pages:HomePage />
-            </x:Arguments>
-        </NavigationPage>
-    </FlyoutPage.Detail>
-</FlyoutPage>
+            <!--
+            Default Styles for all Flyout Items
+            https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/flyout#flyoutitem-and-menuitem-style-classes
+            -->
+            <Style Class="FlyoutItemLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White"></Setter>
+            </Style>
+            <Style Class="FlyoutItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{x:OnPlatform UWP=Transparent, iOS=White}" />
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+            <!--
+            Custom Style you can apply to any Flyout Item
+            -->
+            <Style Class="MenuItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <FlyoutItem Title="Home" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.home.png}">
+        <ShellContent Route="HomePage" ContentTemplate="{DataTemplate pages:HomePage}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Therapists" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.people.png}">
+        <ShellContent Route="TherapistsPage" ContentTemplate="{DataTemplate pages:Therapists}" />
+    </FlyoutItem>
+    <FlyoutItem x:Name="ApplicationsMenuItem" x:FieldModifier="public" Title="Applications" IsVisible="False" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.folder.png}">
+        <ShellContent Route="ApplicationsPage" ContentTemplate="{DataTemplate profession:Applications}" />
+    </FlyoutItem>
+    <FlyoutItem x:Name="InboxMenuItem" x:FieldModifier="public" Title="Inbox" IsVisible="False" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.inbox.png}">
+        <ShellContent Route="InboxPage" ContentTemplate="{DataTemplate communicate:Inbox}" />
+    </FlyoutItem>
+    <FlyoutItem x:Name="ProfileMenuItem" x:FieldModifier="public" Title="Profile" IsVisible="False" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.person.png}">
+        <ShellContent Route="Profile" ContentTemplate="{DataTemplate account:Profile}" />
+    </FlyoutItem>
+    <FlyoutItem x:Name="LoginMenuItem" x:FieldModifier="public" Title="Login" IsVisible="False" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.account_login.png}">
+        <ShellContent Route="Login" ContentTemplate="{DataTemplate account:Login}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Learn" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.pencil.png}">
+        <ShellContent Route="Learn" ContentTemplate="{DataTemplate pages:Learn}" />
+    </FlyoutItem>
+    <FlyoutItem Title="My Anxiety" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.bug.png}">
+        <ShellContent Route="MyAnxiety" ContentTemplate="{DataTemplate pages:MyAnxiety}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Quick Tips" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.excerpt.png}">
+        <ShellContent Route="QuickTips" ContentTemplate="{DataTemplate pages:QuickTips}" />
+    </FlyoutItem>
+    <FlyoutItem Title="About" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.info.png}">
+        <ShellContent Route="About" ContentTemplate="{DataTemplate pages:About}" />
+    </FlyoutItem>
+
+    <TabBar>
+        <Tab Title="Learn" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.pencil.png}">
+        <ShellContent Route="Learn" ContentTemplate="{DataTemplate pages:Learn}" />
+        </Tab>
+        <Tab Title="My Anxiety" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.bug.png}">
+            <ShellContent Route="MyAnxiety" ContentTemplate="{DataTemplate pages:MyAnxiety}" />
+        </Tab>
+        <Tab Title="Quick Tips" Icon="{ext:ImageResource Source=MentalHealth.Mobile.images.excerpt.png}">
+            <ShellContent Route="QuickTips" ContentTemplate="{DataTemplate pages:QuickTips}" />
+        </Tab>
+    </TabBar>
+
+</Shell>

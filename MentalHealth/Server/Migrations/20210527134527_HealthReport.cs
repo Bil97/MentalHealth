@@ -38,39 +38,39 @@ namespace MentalHealth.Server.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "SenderId",
                 table: "Chats",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(100)");
 
             migrationBuilder.AlterColumn<string>(
                 name: "SenderBId",
                 table: "Chats",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(100)");
 
             migrationBuilder.AlterColumn<string>(
                 name: "SenderAId",
                 table: "Chats",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(100)");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Message",
                 table: "Chats",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(100)");
 
             migrationBuilder.AddColumn<string>(
                 name: "SessionId",
                 table: "Chats",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: true);
 
             migrationBuilder.AddPrimaryKey(
@@ -84,8 +84,8 @@ namespace MentalHealth.Server.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PatientId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HealthOfficerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PatientId = table.Column<string>(type: "nvarchar(100)", nullable: true),
+                    HealthOfficerId = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     ProfessionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ServiceFeePaid = table.Column<bool>(type: "bit", nullable: false),
                     DateStarted = table.Column<DateTime>(type: "datetimeoffset", nullable: false),
@@ -110,7 +110,7 @@ namespace MentalHealth.Server.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SessionRecordId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetimeoffset", nullable: false),
-                    HealthRecord = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    HealthRecord = table.Column<string>(type: "nvarchar(100)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -166,53 +166,53 @@ namespace MentalHealth.Server.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "HealthStatus",
                 table: "AspNetUsers",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "SenderId",
                 table: "Chat",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: false,
                 defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
+                oldType: "nvarchar(100)",
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "SenderBId",
                 table: "Chat",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: false,
                 defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
+                oldType: "nvarchar(100)",
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "SenderAId",
                 table: "Chat",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: false,
                 defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
+                oldType: "nvarchar(100)",
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Message",
                 table: "Chat",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: false,
                 defaultValue: "",
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
+                oldType: "nvarchar(100)",
                 oldNullable: true);
 
             migrationBuilder.AddColumn<string>(
                 name: "ConversationId",
                 table: "Chat",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: false,
                 defaultValue: "");
 

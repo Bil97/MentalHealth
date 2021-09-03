@@ -8,24 +8,31 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using System.Web;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MentalHealth.Mobile.Pages.Communicate
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Chat : ContentPage, IAsyncDisposable
+    public partial class Chat : ContentPage, IAsyncDisposable, IQueryAttributable
     {
-        private readonly string UserId;
-        private readonly string SessionId;
-        private readonly HubConnection hubConnection;
+        private string UserId;
+        private string SessionId;
+        private HubConnection hubConnection;
         private UserProfession Profession { get; set; }
         public static bool ChatBackNavigate = false;
         private List<MentalHealth.Models.Chat> messages;
         private MentalHealth.Models.Chat chat = new();
         private UserDetails user = new();
         bool toolbarAdded = false;
+
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        {
+            UserId = HttpUtility.UrlEncode(query["userId"]);
+            SessionId = HttpUtility.UrlEncode(query["sessionId"]);
+        }
+
         public Chat(string userId, string sessionId)
         {
             InitializeComponent();
@@ -43,7 +50,7 @@ namespace MentalHealth.Mobile.Pages.Communicate
         protected override bool OnBackButtonPressed()
         {
             ChatBackNavigate = true;
-            MainPage.NavPage.Navigation.PopAsync();
+            Shell.Current.GoToAsync($"..");
             return base.OnBackButtonPressed();
         }
         private async void Chat_Appearing(object sender, EventArgs e)
@@ -54,7 +61,7 @@ namespace MentalHealth.Mobile.Pages.Communicate
             {
                 if (!Profession.ServiceFeePaid)
                 {
-                    await App.Current.MainPage.Navigation.PushModalAsync(new Transaction(Profession.Id, UserId));
+                    await Shell.Current.GoToAsync($"{nameof(Transaction)}?professionId={Profession.Id}&userId={UserId}");
                 }
                 else
                 {
@@ -187,8 +194,8 @@ namespace MentalHealth.Mobile.Pages.Communicate
 
         private void AddToolbar()
         {
-            var addHealthRecord = new ToolbarItem { Text = "Add health reacord" };
-            addHealthRecord.Clicked += async (sender, e) => { await App.Current.MainPage.Navigation.PushModalAsync(new AddHealthRecord(SessionId)); };
+            var addHealthRecord = new ToolbarItem { Text = "Add health record" };
+            addHealthRecord.Clicked += async (sender, e) => { await Shell.Current.GoToAsync($"{nameof(AddHealthRecord)}?sesionId={SessionId}"); };
 
             var closeSession = new ToolbarItem { Text = "Close this session" };
             closeSession.Clicked += async (sender, e) =>
@@ -199,7 +206,7 @@ namespace MentalHealth.Mobile.Pages.Communicate
                     await App.HttpClient.GetStringAsync($"api/HealthRecords/close-session/{SessionId}");
                     StateLabel.Text = string.Empty;
                     ChatBackNavigate = true;
-                    await MainPage.NavPage.Navigation.PopAsync();
+                    await Shell.Current.GoToAsync("..");
                 }
                 catch (Exception ex) { StateLabel.Text = string.Empty; await DisplayAlert("Send error", ex.Message, "OK"); }
             };

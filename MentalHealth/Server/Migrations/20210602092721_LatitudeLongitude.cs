@@ -15,7 +15,7 @@ namespace MentalHealth.Server.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "LocationLatitude",
                 table: "AspNetUsers",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: false,
                 defaultValue: "");
 
@@ -37,9 +37,9 @@ namespace MentalHealth.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TransactionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Data = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(100)", nullable: true),
+                    TransactionType = table.Column<string>(type: "nvarchar(100)", nullable: true),
+                    Data = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>

@@ -12,11 +12,11 @@ namespace MentalHealth.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ConversationId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SenderAId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SenderBId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SenderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConversationId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    SenderAId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    SenderBId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    SenderId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     DateSent = table.Column<DateTime>(type: "datetimeoffset", nullable: false)
                 },

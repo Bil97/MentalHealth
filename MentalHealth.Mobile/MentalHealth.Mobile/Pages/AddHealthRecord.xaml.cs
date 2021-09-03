@@ -1,21 +1,25 @@
 ﻿using MentalHealth.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-
+using System.Web;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MentalHealth.Mobile.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddHealthRecord : ContentPage
+    public partial class AddHealthRecord : ContentPage,IQueryAttributable
     {
         private string _sessionId;
+
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        {
+            _sessionId = HttpUtility.UrlEncode(query["sessionId"]);
+        }
+
         public AddHealthRecord(string sessionId)
         {
             InitializeComponent();

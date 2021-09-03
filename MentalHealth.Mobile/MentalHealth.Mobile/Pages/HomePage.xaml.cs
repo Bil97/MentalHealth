@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,27 +14,27 @@ namespace MentalHealth.Mobile.Pages
 
         private async void AboutButton_Clicked(object sender, EventArgs e)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new About());
+            await Shell.Current.GoToAsync($"//{nameof(About)}");
         }
 
         private async void TherapistsButton_Clicked(object sender, EventArgs e)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new Therapists());
+            await Shell.Current.GoToAsync($"//{nameof(Therapists)}");
         }
 
         private async void LearnButton_Clicked(object sender, EventArgs e)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new Learn());
+            await Shell.Current.GoToAsync($"//{nameof(Learn)}");
         }
 
         private async void MyAnxietyButton_Clicked(object sender, EventArgs e)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new MyAnxiety());
+            await Shell.Current.GoToAsync($"//{nameof(MyAnxiety)}");
         }
 
         private async void QuickTipsButton_Clicked(object sender, EventArgs e)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new QuickTips());
+            await Shell.Current.GoToAsync($"//{nameof(QuickTips)}");
         }
     }
 }

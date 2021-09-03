@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,7 +13,7 @@ namespace MentalHealth.Mobile.Pages
             "Patients with appointments wait for a long time, " +
             "and this can impact those patients who are in crisis. " +
             "Some patients also have to travel to travel long distances, " +
-            "hence causing discouragng those who lack access to reliable " +
+            "hence causing discouraging those who lack access to reliable " +
             "transportable or those who cannot afford to pay fare. " +
             "Some patients fear to access mental health care because they worry about what " +
             "others will think of them.Others also fail to seek therapy " +

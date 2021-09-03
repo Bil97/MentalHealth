@@ -17,7 +17,7 @@ namespace MentalHealth.Server.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "SessionId",
                 table: "Chats",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(450)",
@@ -32,7 +32,7 @@ namespace MentalHealth.Server.Migrations
                 type: "nvarchar(450)",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
+                oldType: "nvarchar(100)",
                 oldNullable: true);
 
             migrationBuilder.CreateIndex(

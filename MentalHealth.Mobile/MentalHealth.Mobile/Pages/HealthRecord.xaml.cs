@@ -43,12 +43,12 @@ namespace MentalHealth.Mobile.Pages
             }
         }
 
-        private void HealthRecordsView_ItemTapped(object sender, ItemTappedEventArgs e)
+        private async void HealthRecordsView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             var session = e.Item as SessionRecord;
             if (session != null)
             {
-                MainPage.NavPage.Navigation.PushModalAsync(new SessionRecords(session.Id));
+                await Shell.Current.GoToAsync($"{nameof(SessionRecords)}?sessionId={session.Id}");
             }
         }
     }

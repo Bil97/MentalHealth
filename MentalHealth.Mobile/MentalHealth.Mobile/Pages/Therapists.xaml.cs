@@ -71,7 +71,7 @@ namespace MentalHealth.Mobile.Pages
         {
             var profession = (sender as Button).CommandParameter as UserProfession;
             Chat.ChatBackNavigate = false;
-            await App.Current.MainPage.Navigation.PushModalAsync(new Transaction(profession.Id));
+            await Shell.Current.GoToAsync($"{nameof(Chat)}?professionId={profession.Id}");
         }
     }
 }

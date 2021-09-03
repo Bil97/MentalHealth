@@ -12,7 +12,7 @@ namespace MentalHealth.Server.Migrations
                 type: "float",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(100)");
 
             migrationBuilder.AlterColumn<double>(
                 name: "LocationLatitude",
@@ -20,7 +20,7 @@ namespace MentalHealth.Server.Migrations
                 type: "float",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(100)");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -28,7 +28,7 @@ namespace MentalHealth.Server.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "LocationLongitude",
                 table: "AspNetUsers",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: false,
                 oldClrType: typeof(double),
                 oldType: "float");
@@ -36,7 +36,7 @@ namespace MentalHealth.Server.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "LocationLatitude",
                 table: "AspNetUsers",
-                type: "nvarchar(max)",
+                type: "nvarchar(100)",
                 nullable: false,
                 oldClrType: typeof(double),
                 oldType: "float");

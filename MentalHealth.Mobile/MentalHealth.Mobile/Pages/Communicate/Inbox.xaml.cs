@@ -95,7 +95,7 @@ namespace MentalHealth.Mobile.Pages.Communicate
                 userId = chat.SenderB.Id;
             }
 
-            await App.Current.MainPage.Navigation.PushModalAsync(new Chat(userId, chat.SessionId));
+            await Shell.Current.GoToAsync($"{nameof(Chat)}?userId={userId}&ssessionId={chat.SessionId}");
         }
 
         private async void DeleteButton_Clicked(object sender, EventArgs e)

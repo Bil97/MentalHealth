@@ -1,13 +1,8 @@
-﻿using MentalHealth.Mobile.Pages.Communicate;
-using MentalHealth.Mobile.Pages.Profession;
-using System;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,12 +14,6 @@ namespace MentalHealth.Mobile.Pages.UserAccount
         public Login()
         {
             InitializeComponent();
-        }
-
-        protected override bool OnBackButtonPressed()
-        {
-            MainPage.NavPage.Navigation.PopToRootAsync();
-            return base.OnBackButtonPressed();
         }
 
         private async void LoginButton_Clicked(object sender, EventArgs e)
@@ -60,43 +49,20 @@ namespace MentalHealth.Mobile.Pages.UserAccount
                         new AuthenticationHeaderValue("bearer", loginResult);
                     App.IsAuthenticated = true;
 
-                    var menuItems = MainPage.NavPage.FlyoutPage.ListView.ItemsSource as ObservableCollection<MainPageFlyoutMenuItem>;
-                    var profile = new MainPageFlyoutMenuItem
-                    {
-                        Title = "Profile",
-                        TargetType = typeof(Profile),
-                        IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.person.png",
-                        typeof(MainPageFlyout).GetTypeInfo().Assembly)
-                    };
-                    menuItems.Insert(2, profile);
-                    MainPage.NavPage.FlyoutPage.ListView.ItemsSource = menuItems;
-
-                    var inbox = new MainPageFlyoutMenuItem
-                    {
-                        Title = "Inbox",
-                        TargetType = typeof(Inbox),
-                        IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.inbox.png",
-                        typeof(MainPageFlyout).GetTypeInfo().Assembly)
-                    };
-                    menuItems.Insert(2, inbox);
+                    MainPage.page.InboxMenuItem.IsVisible = true;
+                    MainPage.page.ProfileMenuItem.IsVisible = true;
+                    MainPage.page.LoginMenuItem.IsVisible = false;
 
                     var authToken = Application.Current.Properties["authToken"].ToString();
                     var user = App.User.AuthenticationState(authToken);
                     if (user.IsInRole("Admin"))
                     {
-                        var applications = new MainPageFlyoutMenuItem
-                        {
-                            Title = "Applications",
-                            TargetType = typeof(Applications),
-                            IconSource = ImageSource.FromResource("MentalHealth.Mobile.images.folder.png",
-                            typeof(MainPageFlyout).GetTypeInfo().Assembly)
-                        };
-                        menuItems.Insert(2, applications);
+                        MainPage.page.ApplicationsMenuItem.IsVisible = true;
                     }
-                    MainPage.NavPage.FlyoutPage.ListView.ItemsSource = menuItems;
+
                     await App.GetUser();
-                    MainPage.NavPage.LoginToolBar.IsEnabled = false;
-                    await MainPage.NavPage.Navigation.PopToRootAsync();
+
+                    await Shell.Current.GoToAsync($"..");
                 }
             }
             catch (HttpRequestException ex)
@@ -137,12 +103,12 @@ namespace MentalHealth.Mobile.Pages.UserAccount
 
         private async void RegisterButton_Clicked(object sender, EventArgs e)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new Register());
+            await Shell.Current.GoToAsync($"../{nameof(Register)}");
         }
 
         private async void ForgotPassword_Clicked(object sender, EventArgs e)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new ForgotPassword());
+            await Shell.Current.GoToAsync($"../{nameof(ForgotPassword)}");
         }
 
     }

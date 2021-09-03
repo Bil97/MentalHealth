@@ -33,11 +33,12 @@ namespace MentalHealth.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection")));
-            //string connStr = "server=localhost;user=root;database=MentalHealth;port=3306;password=***** ";
+            string sqliteConnection = "DataSource=app.db;Cache=Shared";
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(sqliteConnection));
             //services.AddDbContext<ApplicationDbContext>(options =>
-            //options.UseMySQL(connStr));
+            //options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection")));
+            //string connStr = "server=localhost;user=user;database=MentalHealth;port=3306; ";
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseMySQL(connStr));
 
             services.AddDefaultIdentity<ApplicationUser>(options =>
                 {

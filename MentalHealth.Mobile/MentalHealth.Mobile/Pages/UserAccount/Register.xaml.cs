@@ -1,10 +1,8 @@
 ﻿using MentalHealth.Services;
 using System;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -129,7 +127,7 @@ namespace MentalHealth.Mobile.Pages.UserAccount
                 }
                 else
                 {
-                    await App.Current.MainPage.Navigation.PushModalAsync(new Login());
+                    await Shell.Current.GoToAsync($"../{nameof(Login)}");
                 }
             }
             catch (Exception ex)
@@ -141,7 +139,7 @@ namespace MentalHealth.Mobile.Pages.UserAccount
 
         private async void LoginButton_Clicked(object sender, EventArgs e)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new Login());
+            await Shell.Current.GoToAsync($"../{nameof(Login)}");
         }
 
         private async void LearnHowToButton_Clicked(object sender, EventArgs e)

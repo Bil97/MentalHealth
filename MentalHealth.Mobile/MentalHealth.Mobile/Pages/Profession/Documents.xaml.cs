@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
 using MentalHealth.Models.UserAccount;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,11 +12,17 @@ using Xamarin.Forms.Xaml;
 namespace MentalHealth.Mobile.Pages.Profession
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Documents : ContentPage
+    public partial class Documents : ContentPage, IQueryAttributable
     {
-        private readonly string _userId;
-        private readonly string _professionId;
+        private string _userId;
+        private string _professionId;
         private List<UserProfession> _userProfessions;
+
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        {
+            _userId = HttpUtility.UrlEncode(query["userId"]);
+            _professionId = HttpUtility.UrlEncode(query["professionId"]);
+        }
 
         public Documents(string userId, string professionId)
         {
@@ -66,7 +72,7 @@ namespace MentalHealth.Mobile.Pages.Profession
                 var result = await App.HttpClient.PostAsync($"api/professions/approve", content);
 
                 if (result.IsSuccessStatusCode)
-                    await MainPage.NavPage.Navigation.PopAsync();
+                    await Shell.Current.GoToAsync($"..");
                 else
                     StateLabel.Text = await result.Content.ReadAsStringAsync();
             }
@@ -88,7 +94,7 @@ namespace MentalHealth.Mobile.Pages.Profession
                  };
                 var result = await App.HttpClient.PostAsync($"api/professions/reject", content);
                 if (result.IsSuccessStatusCode)
-                    await MainPage.NavPage.Navigation.PopAsync();
+                    await Shell.Current.GoToAsync($"..");
                 StateLabel.Text = await result.Content.ReadAsStringAsync();
             }
             catch (Exception ex)

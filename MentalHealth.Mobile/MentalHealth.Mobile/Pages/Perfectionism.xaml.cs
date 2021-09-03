@@ -20,37 +20,34 @@ namespace MentalHealth.Mobile.Pages
         }
         private void IntroButton_Clicked(object sender, EventArgs e)
         {
-            var value = IntroPanel.IsVisible;
             IntroButton.BackgroundColor = Color.DodgerBlue;
             SignsButton.BackgroundColor = Color.LightGray;
             TipsButton.BackgroundColor = Color.LightGray;
             Hide();
-            IntroPanel.IsVisible = !value;
+            IntroPanel.IsVisible = true;
         }
 
         private void SignsButton_Clicked(object sender, EventArgs e)
         {
-            var value = SignsPanel.IsVisible;
-            IntroButton.BackgroundColor = Color.DodgerBlue;
-            SignsButton.BackgroundColor = Color.LightGray;
+            IntroButton.BackgroundColor = Color.LightGray;
+            SignsButton.BackgroundColor = Color.DodgerBlue;
             TipsButton.BackgroundColor = Color.LightGray;
             Hide();
-            SignsPanel.IsVisible = !value;
+            SignsPanel.IsVisible = true;
         }
 
         private void TipsButton_Clicked(object sender, EventArgs e)
         {
-            var value = TipsPanel.IsVisible;
-            IntroButton.BackgroundColor = Color.DodgerBlue;
+            IntroButton.BackgroundColor = Color.LightGray;
             SignsButton.BackgroundColor = Color.LightGray;
-            TipsButton.BackgroundColor = Color.LightGray;
+            TipsButton.BackgroundColor = Color.DodgerBlue;
             Hide();
-            TipsPanel.IsVisible = !value;
+            TipsPanel.IsVisible = true;
         }
 
         private async void TherapistsButton_Clicked(object sender, EventArgs e)
         {
-            await App.Current.MainPage.Navigation.PushModalAsync(new Therapists());
+            await Shell.Current.GoToAsync($"{nameof(Therapists)}");
         }
 
     }

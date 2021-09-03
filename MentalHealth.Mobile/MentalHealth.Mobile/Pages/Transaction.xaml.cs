@@ -1,12 +1,13 @@
 ﻿using MentalHealth.Models;
 using MentalHealth.Models.UserAccount;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using System.Web;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Chat = MentalHealth.Mobile.Pages.Communicate.Chat;
@@ -14,18 +15,25 @@ using Chat = MentalHealth.Mobile.Pages.Communicate.Chat;
 namespace MentalHealth.Mobile.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Transaction : ContentPage
+    public partial class Transaction : ContentPage, IQueryAttributable
     {
         private string _professionId;
         private string _userId;
         SessionRecord _sessionRecord = new();
         private UserProfession Profession { get; set; }
         UserDetails User { get; set; }
-        public Transaction(string professionId, string userId = null)
+
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        {
+            string professionId = HttpUtility.UrlEncode(query["professionId"]);
+            var userId = HttpUtility.UrlEncode(query["userId"]);
+            if (!string.IsNullOrEmpty(userId))
+                _userId = userId;
+        }
+
+        public Transaction()
         {
             InitializeComponent();
-            _professionId = professionId;
-            _userId = userId;
 
             this.Appearing += Transaction_Appearing;
         }
@@ -34,16 +42,15 @@ namespace MentalHealth.Mobile.Pages
         {
             if (Chat.ChatBackNavigate)
             {
-                MainPage.NavPage.Navigation.PopAsync();
+                await Shell.Current.GoToAsync("..");
                 return;
             }
             var authToken = Application.Current.Properties["authToken"];
             if (authToken == null)
             {
-                await App.Current.MainPage.Navigation.PushModalAsync(new UserAccount.Login());
+                await Shell.Current.GoToAsync($"{nameof(Login)}");
                 return;
             }
-
 
             await GetProfession();
 
@@ -54,8 +61,8 @@ namespace MentalHealth.Mobile.Pages
             else
                 await GetUser();
 
-            string amount = Profession.ServiceFee.ToString("C2", CultureInfo.CreateSpecificCulture("sw-KE"));
-            TitleLabel.Text = $"To consult {Profession.User.FullName} you must pay pay a service fee of {amount}";
+            string amount = Profession.ServiceFee.ToString("C2", CultureInfo.CreateSpecificCulture("SW-KE"));
+            TitleLabel.Text = $"To consult {Profession.User.FullName} you must pay a service fee of {amount}";
 
             if (User != null && User?.Phonenumber.Length >= 9)
             {
@@ -155,7 +162,7 @@ namespace MentalHealth.Mobile.Pages
                 else
                 {
                     var sessionId = await result.Content.ReadAsStringAsync();
-                    await App.Current.MainPage.Navigation.PushModalAsync(new Chat(Profession.User.Id, sessionId));
+                    await Shell.Current.GoToAsync($"{nameof(Chat)}?userId={Profession.User.Id}&sessionId={sessionId}");
                 }
             }
             catch (Exception ex)
@@ -180,7 +187,7 @@ namespace MentalHealth.Mobile.Pages
                 if (result.IsSuccessStatusCode)
                 {
                     var sessionId = await result.Content.ReadAsStringAsync();
-                    await App.Current.MainPage.Navigation.PushModalAsync(new Chat(Profession.User.Id, sessionId));
+                    await Shell.Current.GoToAsync($"{nameof(Chat)}?userId={Profession.User.Id}&sessionId={sessionId}");
                 }
                 else
                 {
@@ -198,5 +205,6 @@ namespace MentalHealth.Mobile.Pages
         {
             await Pay();
         }
+
     }
 }

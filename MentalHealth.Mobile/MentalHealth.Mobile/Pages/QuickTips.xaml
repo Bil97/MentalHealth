@@ -5,7 +5,7 @@
              x:Class="MentalHealth.Mobile.Pages.QuickTips">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
+            <StackLayout Padding="5">
                 <Label Text="Quick Relief Tips" FontSize="Title" />
                 <Label Text="Take a deap breath" FontSize="Medium" />
                 <Label Text="Try to breathing in for fifteen seconds, then breath out for fifteen seconds, repeat the process go ten minutes." />

@@ -38,7 +38,7 @@
                     <StackLayout>
                         <Label Text="Learn" FontSize="Title"/>
                         <Label Text="Usefull information about anxiety"/>
-                        <Button Text="Read more" TextColor="DodgerBlue" Clicked="LearnButton_Clicked"/>
+                        <Button Text="Read more" Clicked="LearnButton_Clicked"/>
                     </StackLayout>
                 </Frame>
 
@@ -46,7 +46,7 @@
                     <StackLayout>
                         <Label Text="My Anxiety" FontSize="Title"/>
                         <Label Text="What are you experiencing?"/>
-                        <Button Text="Read more" TextColor="DodgerBlue" Clicked="MyAnxietyButton_Clicked"/>
+                        <Button Text="Read more" Clicked="MyAnxietyButton_Clicked"/>
                     </StackLayout>
                 </Frame>
 
@@ -54,7 +54,7 @@
                     <StackLayout>
                         <Label Text="Quick Tips" FontSize="Title"/>
                         <Label Text="Quick tips to help you with anxiety"/>
-                        <Button Text="Read more" TextColor="DodgerBlue" Clicked="QuickTipsButton_Clicked"/>
+                        <Button Text="Read more" Clicked="QuickTipsButton_Clicked"/>
                     </StackLayout>
                 </Frame>
 
